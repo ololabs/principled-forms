@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "workspaces": {
+    "packages": ["packages/*"],
+    "nohoist": ["**/true-myth", "**/true-myth/**"]
+  },
+  "prettier": {
+    "trailingComma": "es5"
+  }
+}
