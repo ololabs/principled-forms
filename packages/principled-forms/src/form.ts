@@ -1,9 +1,8 @@
 import { Maybe } from 'true-myth';
 import { every } from 'lodash/fp';
 
-import Field, { OptionalField, RequiredField, Type, InputField } from './field';
+import Field, { OptionalField, RequiredField } from './field';
 import Validity from './validity';
-import { minLength, maxLength } from './validators';
 
 export type Form<Model> = {
   [K in keyof Model]: Model[K] extends Maybe<infer U> ? OptionalField<U> : RequiredField<Model[K]>
