@@ -1,58 +1,25 @@
 import { Maybe } from 'true-myth';
-import { identity, negate } from 'lodash';
+import { every } from 'lodash/fp';
 
-type Unmaybe<T> = T extends Maybe<infer U> ? U : T;
+import Field, { OptionalField, RequiredField, Type, InputField } from './field';
+import Validity from './validity';
+import { minLength, maxLength } from './validators';
 
-type Form<Model> = { [K in keyof Model]: Field<Unmaybe<Model[K]>> };
-
-type Address = {
-  street: string;
-  building: Maybe<string>;
-  city: string;
-  zipCode: string;
+export type Form<Model> = {
+  [K in keyof Model]: Model[K] extends Maybe<infer U> ? OptionalField<U> : RequiredField<Model[K]>
 };
 
-type AddressForm = Form<Address>;
+export const isValid = <T, K extends keyof Form<T>>(form: Form<T>): boolean =>
+  (Object.keys(form) as K[])
+    .map(key => form[key] as Field<T[K]>)
+    .map(Field.validate)
+    .map(every(Validity.isValid))
+    .reduce((allValid, validity) => allValid && validity, true); // flatMap
 
-const isValidField = <T>(field: Field<T>): boolean =>
-  field.validators
-    .map(validate => validate(field.value))
-    .every(validity => validity.type === ValidityType.Valid);
+export type FromModel<T> = (
+  model: T extends Maybe<infer U> ? Maybe<U> : T
+) => Form<T extends Maybe<infer U> ? U : T>;
 
-const isInvalid = (v: Validity): v is Invalid =>
-  v.type === ValidityType.Invalid;
-
-const isValidForm = <T>(form: Form<T>): boolean =>
-  (Object.keys(form) as Array<keyof Form<T>>)
-    .map(key => form[key])
-    .map(isValidField)
-    .every(identity);
-
-const addressForm: Form<Address> = {
-  street: {
-    type: 'text',
-    value: undefined,
-    validity: UNVALIDATED,
-    validators: [required]
-  },
-  building: {
-    type: 'text',
-    value: undefined,
-    validity: UNVALIDATED,
-    validators: [minLength(1)].map(optional)
-  },
-  city: {
-    type: 'text',
-    value: undefined,
-    validity: UNVALIDATED,
-    validators: [required, minLength(1)]
-  },
-  zipCode: {
-    type: 'text',
-    value: undefined,
-    validity: UNVALIDATED,
-    validators: [required, regex(ZIP_CODE_RE, 'not a valid zip code')]
-  }
+export const Form = {
+  isValid,
 };
-
-const result = isValidForm(addressForm);

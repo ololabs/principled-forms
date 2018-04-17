@@ -9,7 +9,9 @@ export enum Type {
 let UNVALIDATED: Unvalidated;
 export class Unvalidated {
   type: Type.Unvalidated = Type.Unvalidated;
-  private constructor() {}
+
+  constructor() {}
+
   static create(): Unvalidated {
     if (isVoid(UNVALIDATED)) {
       UNVALIDATED = new Unvalidated();
@@ -20,15 +22,16 @@ export class Unvalidated {
 }
 
 export const unvalidated = Unvalidated.create;
+export const isUnvalidated = (v: Validity): v is Unvalidated => v.type === Type.Unvalidated;
 
 export class Invalid {
   type: Type.Invalid = Type.Invalid;
 
+  constructor(readonly reason: string) {}
+
   static because(reason: string) {
     return new Invalid(reason);
   }
-
-  private constructor(readonly reason: string) {}
 }
 
 export const invalid = Invalid.because;
@@ -38,7 +41,7 @@ let VALID: Valid;
 export class Valid {
   type: Type.Valid = Type.Valid;
 
-  private constructor() {}
+  constructor() {}
 
   static create() {
     if (isVoid(VALID)) {
@@ -50,39 +53,34 @@ export class Valid {
 }
 
 export const valid = Valid.create;
+export const isValid = (v: Validity): v is Valid => v.type === Type.Valid;
 
 export type Validated = Invalid | Valid;
 
 export type Validator<T> = (value: T) => Validated;
 
-export type Rule = <T>(
-  ...validators: Validator<T>[]
-) => (value?: T | null) => Validated[];
+export type RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) => Validated[];
 
-export const required: Rule = <T>(...validators: Validator<T>[]) => (
-  value?: T | null
-) =>
+export const required: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
   isVoid(value)
     ? [Invalid.because('field is required')]
     : validators.map(validate => validate(value));
 
-export const optional: Rule = <T>(...validators: Validator<T>[]) => (
-  value?: T | null
-) => (isVoid(value) ? [valid()] : validators.map(validate => validate(value)));
-
-export type Validate<T> = (value?: T | null) => Validated[];
+export const optional: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
+  isVoid(value) ? [valid()] : validators.map(validate => validate(value));
 
 export type Validity = Unvalidated | Validated;
 export const Validity = {
   Type,
   Unvalidated,
-  Invalid,
-  Valid,
   unvalidated,
+  isUnvalidated,
+  Invalid,
   invalid,
   isInvalid,
+  Valid,
   valid,
-  Rule,
+  isValid,
   required,
   optional,
 };

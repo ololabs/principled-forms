@@ -1,23 +1,27 @@
 import { valid, invalid, Validator, Validated } from './validity';
 
-export const minLength = (min: number): Validator<string> => (
+type ErrMessage<T> = (val: T) => string;
+
+const defaultInvalid = <T>(fallback: string, requirement: T, err?: ErrMessage<T>) =>
+  invalid(err ? err(requirement) : fallback);
+
+export const minLength = (min: number, err?: ErrMessage<number>): Validator<string> => (
   value: string
 ): Validated =>
-  value.length >= min ? valid() : invalid(`Must be at least ${min} characters`);
+  value.length >= min ? valid() : defaultInvalid(`Must be at least ${min} characters`, min, err);
 
-export const maxLength = (max: number): Validator<string> => (
+export const maxLength = (max: number, err?: ErrMessage<number>): Validator<string> => (
   value: string
 ): Validated =>
-  value.length <= max ? valid() : invalid(`Must be at most ${max} characters`);
+  value.length <= max ? valid() : defaultInvalid(`Must be at most ${max} characters`, max, err);
 
-export const minValue = (min: number): Validator<number> => (value: number) =>
-  value >= min ? valid() : invalid(`Must be at least ${min}`);
+export const minValue = (min: number, err?: ErrMessage<number>): Validator<number> => (
+  value: number
+) => (value >= min ? valid() : defaultInvalid(`Must be at least ${min}`, min, err));
 
-export const maxValue = (max: number): Validator<number> => (value: number) =>
-  value <= max ? valid() : invalid(`Must be at most ${max}`);
+export const maxValue = (max: number, err?: ErrMessage<number>): Validator<number> => (
+  value: number
+) => (value <= max ? valid() : defaultInvalid(`Must be at most ${max}`, max, err));
 
-export const regex = (
-  re: RegExp,
-  err: (val: string) => string
-): Validator<string> => (value: string) =>
+export const regex = (re: RegExp, err: ErrMessage<string>): Validator<string> => (value: string) =>
   re.test(value) ? valid() : invalid(err(value));
