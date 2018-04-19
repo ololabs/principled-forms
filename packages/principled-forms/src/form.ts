@@ -150,3 +150,5 @@ export type FromModel<T> = (
 export const Form = {
   isValid,
 };
+
+export default Form;

@@ -1,5 +1,5 @@
 import { Maybe } from 'true-myth';
-import { isValid, FromModel } from '../src/form';
+import Form from '../src/form';
 import Field, { Type } from '../src/field';
 import NumberField from '../src/field/number';
 import { minLength, maxLength, minValue } from '../src/validators';
@@ -12,13 +12,13 @@ type User = {
 
 const nameValidations = [minLength(1), maxLength(40)];
 
-const fromUser: FromModel<User> = user => ({
+const fromUser = (user: User): Form<User> => ({
   age: NumberField.required({ type: Type.number, validators: [minValue(0)], value: user.age }),
   name: Field.optional({ validators: nameValidations, value: user.name }),
   familyName: Field.optional({ validators: nameValidations, value: user.familyName }),
 });
 
-const fromMaybeUser: FromModel<Maybe<User>> = Maybe.match({
+const fromMaybeUser = Maybe.match({
   Just: fromUser,
   Nothing: () => ({
     age: NumberField.required({ type: Type.number, validators: [minValue(0)] }),
@@ -37,5 +37,5 @@ const nobody: Maybe<User> = Maybe.nothing();
 
 const chrisForm = fromUser(chris);
 const nobodyForm = fromMaybeUser(nobody);
-const validChris = isValid(chrisForm);
-const validNobody = isValid(nobodyForm);
+const validChris = Form.isValid(chrisForm);
+const validNobody = Form.isValid(nobodyForm);
