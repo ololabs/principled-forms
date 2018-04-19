@@ -56,10 +56,13 @@ export const valid = Valid.create;
 export const isValid = (v: Validity): v is Valid => v.type === Type.Valid;
 
 export type Validated = Invalid | Valid;
+export const isValidated = (v: Validity): v is Validated => !isUnvalidated(v);
 
 export type Validator<T> = (value: T) => Validated;
 
 export type RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) => Validated[];
+
+export type LazinessRule = <T>(validator: Validator<T>) => Validator<T>;
 
 export const required: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
   isVoid(value)
@@ -75,6 +78,7 @@ export const Validity = {
   Unvalidated,
   unvalidated,
   isUnvalidated,
+  isValidated,
   Invalid,
   invalid,
   isInvalid,

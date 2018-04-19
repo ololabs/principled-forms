@@ -1,17 +1,51 @@
+import { Maybe } from 'true-myth';
+
+import Field, { FieldConstructors, Type } from '.';
+import { Validator, Validity } from '../validity';
 import { regex } from '../validators';
-import { FieldConstructor, Type, RequiredField, OptionalField } from '.';
-import { Validator } from '../validity';
 
 const EMAIL_RE = /.+@.+\..+/;
 const emailValidator = regex(EMAIL_RE, (val: string) => `${val} is not a valid email address`);
 
-export const Email: FieldConstructor<string> = {
-  required(validators: Array<Validator<string>> = [], value?: string): RequiredField<string> {
-    return new RequiredField(Type.email, [emailValidator].concat(validators), value);
+type RequiredEmailConfig = {
+  value: string;
+  validators: Array<Validator<string>>;
+  validity: Validity;
+};
+
+type OptionalEmailConfig = {
+  value: string | Maybe<string>;
+  validators: Array<Validator<string>>;
+  validity: Validity;
+};
+
+export const Email: FieldConstructors<string> = {
+  required({
+    value = undefined,
+    validators = [],
+    validity = Validity.unvalidated(),
+  }: Partial<RequiredEmailConfig>) {
+    return Field.required({
+      type: Type.email,
+      value,
+      validators: [emailValidator].concat(validators),
+      validity,
+      eager: false,
+    });
   },
 
-  optional(validators: Array<Validator<string>> = [], value?: string): OptionalField<string> {
-    return new OptionalField(Type.email, [emailValidator].concat(validators), value);
+  optional({
+    value = undefined,
+    validators = [],
+    validity = Validity.unvalidated(),
+  }: Partial<OptionalEmailConfig>) {
+    return Field.optional({
+      type: Type.email,
+      value,
+      validators: [emailValidator].concat(validators),
+      validity,
+      eager: false,
+    });
   },
 };
 
