@@ -65,7 +65,7 @@ export type RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | nu
 export type LazinessRule = <T>(validator: Validator<T>) => Validator<T>;
 
 export const required: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
-  isVoid(value)
+  isVoid(value) || (typeof value === 'string' && value.trim() === '')
     ? [Invalid.because('field is required')]
     : validators.map(validate => validate(value));
 

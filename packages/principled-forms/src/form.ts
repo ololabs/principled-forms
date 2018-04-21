@@ -1,5 +1,4 @@
 import { Maybe } from 'true-myth';
-import { every } from 'lodash/fp';
 
 import Field, { OptionalField, RequiredField, InputTypes } from './field';
 import Validity from './validity';
@@ -140,7 +139,7 @@ export const isValid = <T, K extends keyof Form<T>>(form: Form<T>): boolean =>
       Field.validate(field)
     )
     .map(field => field.validity)
-    .map(every(Validity.isValid))
+    .map(Validity.isValid)
     .reduce((allValid, validity) => allValid && validity, true); // flatMap
 
 export type FromModel<T> = (
