@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { assert } from '@ember/debug';
 import { action } from '@ember-decorators/object';
 
-import { defaultTo, noop, isString, isObject } from 'lodash';
+import { defaultTo, noop, isString, isNil } from 'lodash';
 import Field, { InputTypes } from 'principled-forms/field';
 
 // @ts-ignore: Ignore import of compiled template
@@ -13,7 +13,7 @@ export default class PrincipledFormField<T extends InputTypes> extends Component
 
   // normal class body definition here
   label: string;
-  model: Field<T>;
+  value: T;
 
   onChange?: (value: T) => void = defaultTo(this.onChange, noop);
   onInput?: (value: T) => void = defaultTo(this.onInput, noop);
@@ -24,7 +24,7 @@ export default class PrincipledFormField<T extends InputTypes> extends Component
     super();
 
     assert('`label` is required', isString(this.label));
-    assert('`model` is required', isObject(this.model));
+    assert('`value` is required', !isNil(this.value));
     assert(
       'at least one of `onChange`, `onInput` is required',
       this.onChange !== noop || this.onInput !== noop
