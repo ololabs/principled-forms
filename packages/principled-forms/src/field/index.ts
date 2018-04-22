@@ -43,7 +43,7 @@ export function validate<T extends InputTypes>(field: Field<T>): Field<T> {
   return { ...field, validity: newValidity };
 }
 
-// <Input type={{@model.type}} value={{@model.value}} />
+// <Input @type={{@model.type}} @value={{@model.value}} />
 
 export type InputTypes = string | number | boolean;
 
@@ -88,7 +88,7 @@ export class RequiredField<T extends InputTypes> implements MinimalField<T> {
   }
 }
 
-const required = <T extends InputTypes>(config: RequiredFieldConfig<T>) =>
+const required = <T extends InputTypes>(config?: RequiredFieldConfig<T>) =>
   new RequiredField(config);
 
 export type OptionalFieldConfig<T extends InputTypes> = Partial<{
@@ -129,7 +129,7 @@ export class OptionalField<T extends InputTypes> implements MinimalField<T> {
   }
 }
 
-const optional = <T extends InputTypes>(config: OptionalFieldConfig<T>) =>
+const optional = <T extends InputTypes>(config?: OptionalFieldConfig<T>) =>
   new OptionalField(config);
 
 export type Field<T extends InputTypes> = RequiredField<T> | OptionalField<T>;
