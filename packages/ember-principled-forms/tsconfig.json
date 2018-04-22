@@ -25,6 +25,9 @@
       "ember-principled-forms/*": [
         "addon/*"
       ],
+      "principled-forms/*": [
+        "../principled-forms/src/*"
+      ],
       "*": [
         "types/*"
       ]
@@ -35,6 +38,7 @@
     "app",
     "addon",
     "tests",
-    "types"
+    "types",
+    "../principled-forms/src"
   ]
 }
