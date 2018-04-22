@@ -15,7 +15,7 @@ export enum Type {
 
 const isMaybe = (v: any): v is Maybe<any> => v instanceof Just || v instanceof Nothing;
 
-const _validate = <T extends InputTypes>(field: Field<T>): Validated[] => {
+const _validate = <T>(field: Field<T>): Validated[] => {
   const rule = field.isRequired ? Validity.required : Validity.optional;
   return rule(...field.validators)(field.value);
 };
@@ -25,7 +25,7 @@ export enum Laziness {
   Eager,
 }
 
-export function validate<T extends InputTypes>(field: Field<T>): Field<T> {
+export function validate<T>(field: Field<T>): Field<T> {
   const validities = _validate(field);
 
   // We eagerly validate *either* when configured to *or* when the field has
@@ -45,9 +45,7 @@ export function validate<T extends InputTypes>(field: Field<T>): Field<T> {
 
 // <Input @type={{@model.type}} @value={{@model.value}} />
 
-export type InputTypes = string | number | boolean;
-
-export interface MinimalField<T extends InputTypes> {
+export interface MinimalField<T> {
   value?: T;
   isRequired: boolean;
   readonly type: Type;
@@ -55,7 +53,7 @@ export interface MinimalField<T extends InputTypes> {
   readonly validity: Validity;
 }
 
-export type RequiredFieldConfig<T extends InputTypes> = Partial<{
+export type RequiredFieldConfig<T> = Partial<{
   type: Type;
   eager: boolean;
   validity: Validity;
@@ -63,7 +61,7 @@ export type RequiredFieldConfig<T extends InputTypes> = Partial<{
   value: T;
 }>;
 
-export class RequiredField<T extends InputTypes> implements MinimalField<T> {
+export class RequiredField<T> implements MinimalField<T> {
   value?: T;
   eager: boolean;
 
@@ -88,10 +86,9 @@ export class RequiredField<T extends InputTypes> implements MinimalField<T> {
   }
 }
 
-const required = <T extends InputTypes>(config?: RequiredFieldConfig<T>) =>
-  new RequiredField(config);
+const required = <T>(config?: RequiredFieldConfig<T>) => new RequiredField(config);
 
-export type OptionalFieldConfig<T extends InputTypes> = Partial<{
+export type OptionalFieldConfig<T> = Partial<{
   type: Type;
   eager: boolean;
   validity: Validity;
@@ -99,7 +96,7 @@ export type OptionalFieldConfig<T extends InputTypes> = Partial<{
   value: T | Maybe<T>;
 }>;
 
-export class OptionalField<T extends InputTypes> implements MinimalField<T> {
+export class OptionalField<T> implements MinimalField<T> {
   value?: T;
   eager: boolean;
 
@@ -129,12 +126,11 @@ export class OptionalField<T extends InputTypes> implements MinimalField<T> {
   }
 }
 
-const optional = <T extends InputTypes>(config?: OptionalFieldConfig<T>) =>
-  new OptionalField(config);
+const optional = <T>(config?: OptionalFieldConfig<T>) => new OptionalField(config);
 
-export type Field<T extends InputTypes> = RequiredField<T> | OptionalField<T>;
+export type Field<T> = RequiredField<T> | OptionalField<T>;
 
-export interface FieldConstructors<T extends InputTypes> {
+export interface FieldConstructors<T> {
   required(options: RequiredFieldConfig<T>): RequiredField<T>;
   optional(options: OptionalFieldConfig<T>): OptionalField<T>;
 }

@@ -2,16 +2,21 @@
   "name": "principled-forms",
   "version": "1.0.0",
   "description": "Principled form handling in TypeScript.",
-  "main": "dist/index.js",
+  "module": "build/src/index.js",
+  "types": "build/src/index.d.ts",
   "author": "Chris Krycho",
   "license": "MIT",
   "dependencies": {
     "true-myth": "1.2.0"
   },
   "devDependencies": {
-    "typescript": "^2.8.1",
+    "typescript": "^2.8.3",
     "prettier-eslint": "8.8.1",
     "typescript-eslint-parser": "eslint/typescript-eslint-parser#ts-2.8",
-    "lodash": "4.17.5"
+    "lodash": "4.17.5",
+    "ember-cli": "3.1.2"
+  },
+  "ember-addon": {
+    "main": "ember-addon.js"
   }
 }

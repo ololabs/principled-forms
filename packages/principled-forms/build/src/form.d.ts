@@ -1,9 +1,6 @@
 import { Maybe } from 'true-myth';
-
-import Field, { OptionalField, RequiredField } from './field';
-import Validity from './validity';
+import { OptionalField, RequiredField } from './field';
 import { NonNullableFieldNames } from './type-utils';
-
 /**
   Given a backing/persistence model, define the type of a corresponding form
   model.
@@ -70,28 +67,12 @@ import { NonNullableFieldNames } from './type-utils';
   to work, since otherwise its types are `ComputedProperty` instances. Types
   which do not have class properties on them will Just Work™.
  */
-export type Form<T> = Required<
-  {
-    [K in keyof T]: K extends NonNullableFieldNames<T>
-      ? T[K] extends Maybe<infer U> ? OptionalField<U> : RequiredField<T[K]>
-      : OptionalField<NonNullable<T[K]>>
-  }
->;
-
-export const isValid = <T, F extends Form<T>, K extends keyof F>(form: F): boolean =>
-  (Object.keys(form) as K[])
-    .map(key => form[key] as Field<any>) // `any` b/c TS loses mapped type context here
-    .map(Field.validate)
-    .map(field => field.validity)
-    .map(Validity.isValid)
-    .reduce((allValid, validity) => allValid && validity, true); // flatMap
-
-export type FromModel<T> = (
-  model: T extends Maybe<infer U> ? Maybe<U> : T
-) => Form<T extends Maybe<infer U> ? U : T>;
-
-export const Form = {
-  isValid,
+export declare type Form<T> = Required<{
+    [K in keyof T]: K extends NonNullableFieldNames<T> ? T[K] extends Maybe<infer U> ? OptionalField<U> : RequiredField<T[K]> : OptionalField<NonNullable<T[K]>>;
+}>;
+export declare const isValid: <T, F extends Required<{ [K in keyof T]: K extends { [K in keyof T]: T[K] extends NonNullable<T[K]> ? K : never; }[keyof T] ? T[K] extends Maybe<infer U> ? OptionalField<U> : RequiredField<T[K]> : OptionalField<NonNullable<T[K]>>; }>, K extends keyof F>(form: F) => boolean;
+export declare type FromModel<T> = (model: T extends Maybe<infer U> ? Maybe<U> : T) => Form<T extends Maybe<infer U> ? U : T>;
+export declare const Form: {
+    isValid: <T, F extends Required<{ [K in keyof T]: K extends { [K in keyof T]: T[K] extends NonNullable<T[K]> ? K : never; }[keyof T] ? T[K] extends Maybe<infer U> ? OptionalField<U> : RequiredField<T[K]> : OptionalField<NonNullable<T[K]>>; }>, K extends keyof F>(form: F) => boolean;
 };
-
 export default Form;

@@ -1,1 +1,10 @@
-{{name}}
+<label class={{labelClass}}>
+  {{label}}
+  <input
+    value={{value}}
+    type={{type}}
+    onchange={{action 'change' value='target.value'}}
+    oninput={{action 'input' value='target.value'}}
+    class={{inputClass}}
+  >
+</label>

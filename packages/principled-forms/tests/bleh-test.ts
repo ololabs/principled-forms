@@ -1,4 +1,5 @@
 import { Maybe } from 'true-myth';
+
 import Form from '../src/form';
 import Field, { Type } from '../src/field';
 import Number from '../src/field/number';

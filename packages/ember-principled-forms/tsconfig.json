@@ -26,7 +26,10 @@
         "addon/*"
       ],
       "principled-forms/*": [
-        "../principled-forms/src/*"
+        "node_modules/principled-forms/build/src/*"
+      ],
+      "true-myth/*": [
+        "node_modules/true-myth/dist/types/src/*"
       ],
       "*": [
         "types/*"
@@ -39,6 +42,5 @@
     "addon",
     "tests",
     "types",
-    "../principled-forms/src"
   ]
 }
