@@ -1,4 +1,3 @@
-
 import Maybe, { Just, Nothing } from 'true-myth/maybe';
 
 import Validity, { Validator, Validated } from '../validity';
@@ -26,15 +25,8 @@ export enum Laziness {
   Eager,
 }
 
-type ConstructorConfig<T extends InputTypes> = Required<RequiredFieldConfig<T>> | Required<OptionalFieldConfig<T>>;
-function construct<T extends InputTypes>(isRequired: boolean, config: ConstructorConfig<T>): Field<T> {
-  return isRequired ? required(config as RequiredFieldConfig<T>) : optional(config as OptionalFieldConfig<T>);
-}
-
-export function validate<T extends InputTypes, F extends Field<T>>(
-  field: F
-): F extends RequiredField<T> ? RequiredField<T> : OptionalField<T> {
-  const validities = _validate(field as Field<T>);
+export function validate<T extends InputTypes>(field: Field<T>): Field<T> {
+  const validities = _validate(field);
 
   // We eagerly validate *either* when configured to *or* when the field has
   // already been validated, since in that case any change to invalidity should
@@ -48,31 +40,7 @@ export function validate<T extends InputTypes, F extends Field<T>>(
     ? Validity.valid()
     : onInvalid(validities.find(Validity.isInvalid)!.reason); // at least one by definition
 
-  // TODO: Can we do this without `any`?
-  return construct(field.isRequired, {
-    eager: field.eager,
-    type: field.type,
-    validators: field.validators,
-    validity: newValidity,
-    value: field.value,
-  } as any) as any;
-}
-
-export function validateChange<T extends InputTypes, F extends Field<T>>(
-  value: T,
-  field: F,
-): F extends RequiredField<T> ? RequiredField<T> : OptionalField<T> {
-  // TODO: Are we worried that this creates 2 new `Field` instances?
-  // Once here, and once within `validate`
-  // TODO: Can we do this without `any`?
-  const newField = construct(field.isRequired, {
-    eager: field.eager,
-    type: field.type,
-    validators: field.validators,
-    validity: field.validity,
-    value,
-  }) as any;
-  return validate(newField) as any;
+  return { ...field, validity: newValidity };
 }
 
 // <Input type={{@model.type}} value={{@model.value}} />
@@ -105,15 +73,13 @@ export class RequiredField<T extends InputTypes> implements MinimalField<T> {
   readonly validators: Array<Validator<T>>;
   readonly validity: Validity;
 
-  // TODO: Consider allowing parameterless constructor so we can just do
-  // `Field.required()` instead of `Field.required({})`
   constructor({
     type = Type.text,
     validity = Validity.unvalidated(),
     validators = [],
     value = undefined,
     eager = true,
-  }: RequiredFieldConfig<T>) {
+  }: RequiredFieldConfig<T> = {}) {
     this.type = type;
     this.value = value;
     this.eager = eager;
@@ -149,7 +115,7 @@ export class OptionalField<T extends InputTypes> implements MinimalField<T> {
     validators = [],
     value = undefined,
     eager = true,
-  }: OptionalFieldConfig<T>) {
+  }: OptionalFieldConfig<T> = {}) {
     if (isMaybe(value)) {
       this.value = value.isJust() ? value.unsafelyUnwrap() : undefined;
     } else {
@@ -179,7 +145,6 @@ export const Field = {
   required,
   optional,
   validate,
-  validateChange,
 };
 
 export default Field;
