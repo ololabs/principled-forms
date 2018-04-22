@@ -1,1 +1,1 @@
-export { default } from 'ember-principled-forms/components/principled-form-field';
+export { default } from 'ember-principled-forms/components/principled-form-field/component';
