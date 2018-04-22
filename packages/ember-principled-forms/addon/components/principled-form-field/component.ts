@@ -11,10 +11,10 @@ import { assertNever } from "ember-principled-forms/lib/type-utils";
 // @ts-ignore: Ignore import of compiled template
 import layout from "./template";
 
-type TextTypes = Type.color | Type.email | Type.password | Type.text;
+type StringInputType = Type.color | Type.email | Type.password | Type.text;
 
+function parseValue(value: string, type: StringInputType): string;
 function parseValue(value: string, type: Type.number): number;
-function parseValue(value: string, type: TextTypes): string;
 function parseValue(value: string, type: Type.checkbox | Type.radio): boolean;
 function parseValue(value: string, type: Type.date): Date;
 function parseValue(
