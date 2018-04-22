@@ -131,8 +131,8 @@ const optional = <T>(config?: OptionalFieldConfig<T>) => new OptionalField(confi
 export type Field<T> = RequiredField<T> | OptionalField<T>;
 
 export interface FieldConstructors<T> {
-  required(options: RequiredFieldConfig<T>): RequiredField<T>;
-  optional(options: OptionalFieldConfig<T>): OptionalField<T>;
+  required(options?: RequiredFieldConfig<T>): RequiredField<T>;
+  optional(options?: OptionalFieldConfig<T>): OptionalField<T>;
 }
 
 export const Field = {

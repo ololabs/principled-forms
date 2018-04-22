@@ -3,11 +3,11 @@
 const path = require('path');
 
 module.exports = {
-  name: 'true-myth',
+  name: 'principled-forms',
 
   setupPreprocessorRegistry(type, registry) {
     if (type === 'self') {
-      this.treePaths.addon = path.resolve(__dirname, 'dist', 'modules', 'src');
+      this.treePaths.addon = path.resolve(__dirname, 'build', 'src');
 
       registry.add('js', {
         name: 'babel-with-app-settings',

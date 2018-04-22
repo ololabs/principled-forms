@@ -50,6 +50,7 @@
     "ember-load-initializers": "^1.0.0",
     "ember-lodash-fp": "0.2.0",
     "ember-maybe-import-regenerator": "^0.1.6",
+    "ember-object-update": "^0.5.1",
     "ember-resolver": "^4.0.0",
     "ember-source": "~3.1.0",
     "ember-source-channel-url": "^1.0.1",
@@ -60,7 +61,7 @@
     "prettier-eslint": "8.8.1",
     "principled-forms": "link:../principled-forms",
     "true-myth": "1.2.0",
-    "typescript": "^2.8.1",
+    "typescript": "^2.8.3",
     "typescript-eslint-parser": "eslint/typescript-eslint-parser#ts-2.8"
   },
   "engines": {

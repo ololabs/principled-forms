@@ -1,17 +1,17 @@
 <h2 id="title">Welcome to Principled Forms!</h2>
-{{debugger}}
-{{!-- {{principled-form-field
+
+{{principled-form-field
     type=user.name.type
     value=user.name.value
     label='Name'
-    onChange=(action 'change')
-    onInput=(action 'input')
+    onChange=(action 'change' 'name')
+    onInput=(action 'input' 'name')
 }}
 
 {{principled-form-field
     type=user.age.type
     value=user.age.value
     label='Age'
-    onChange=(action 'change')
-    onInput=(action 'input')
-}} --}}
+    onChange=(action 'change' 'age')
+    onInput=(action 'input' 'age')
+}}

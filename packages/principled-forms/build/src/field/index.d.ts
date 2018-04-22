@@ -56,8 +56,8 @@ export declare class OptionalField<T> implements MinimalField<T> {
 }
 export declare type Field<T> = RequiredField<T> | OptionalField<T>;
 export interface FieldConstructors<T> {
-    required(options: RequiredFieldConfig<T>): RequiredField<T>;
-    optional(options: OptionalFieldConfig<T>): OptionalField<T>;
+    required(options?: RequiredFieldConfig<T>): RequiredField<T>;
+    optional(options?: OptionalFieldConfig<T>): OptionalField<T>;
 }
 export declare const Field: {
     Required: typeof RequiredField;
