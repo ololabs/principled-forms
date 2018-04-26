@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
 
-import Field, { FieldConstructors, Type } from '.';
+import Field, { FieldConstructors, Type, OptionalField, RequiredField } from '.';
 import Validity, { Validator } from '../validity';
 
 type RequiredNumberConfig = Partial<{
@@ -23,7 +23,7 @@ export const Number: FieldConstructors<number> = {
     value = undefined,
     validity = Validity.unvalidated(),
     eager = false,
-  }: RequiredNumberConfig) {
+  }: RequiredNumberConfig = {}): RequiredField<number> {
     return Field.required({ type: Type.number, validators, value, validity, eager });
   },
 
@@ -32,9 +32,11 @@ export const Number: FieldConstructors<number> = {
     value = undefined,
     validity = Validity.unvalidated(),
     eager = false,
-  }: OptionalNumberConfig) {
+  }: OptionalNumberConfig = {}): OptionalField<number> {
     return Field.optional({ type: Type.number, validators, value, validity, eager });
   },
 };
+
+export type NumberField = Field<number>;
 
 export default Number;

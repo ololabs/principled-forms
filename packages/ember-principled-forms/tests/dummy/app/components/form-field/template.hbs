@@ -1,0 +1,35 @@
+{{#docs-demo as |demo|}}
+  {{#demo.example name='eager-principled-form-field.hbs'}}
+    {{principled-form-field
+        type=this.user.name.type
+        value=this.user.name.value
+        label='Name'
+        onChange=(action 'handleChange' 'name')
+        onInput=(action 'handleInput' 'name')
+    }}
+    <br/>
+
+    Value: {{this.user.name.value}}
+    Validity: {{this.user.name.validity.type}}
+  {{/demo.example}}
+
+  {{demo.snippet 'eager-principled-form-field.hbs'}}
+{{/docs-demo}}
+
+{{#docs-demo as |demo|}}
+  {{#demo.example name='lazy-principled-form-field.hbs'}}
+    {{principled-form-field
+        type=this.user.age.type
+        value=this.user.age.value
+        label='Age'
+        onChange=(action 'handleChange' 'age')
+        onInput=(action 'handleInput' 'age')
+    }}
+    <br/>
+
+    Value: {{this.user.age.value}}
+    Validity: {{this.user.age.validity.type}}
+  {{/demo.example}}
+
+  {{demo.snippet 'lazy-principled-form-field.hbs'}}
+{{/docs-demo}}

@@ -25,15 +25,22 @@
       "ember-principled-forms/*": [
         "addon/*"
       ],
+      "principled-forms/*": [
+        "node_modules/principled-forms/build/*"
+      ],
+      "true-myth/*": [
+        "node_modules/true-myth/dist/types/src/*"
+      ],
       "*": [
         "types/*"
       ]
-    }
+    },
+    "experimentalDecorators": true
   },
   "include": [
     "app",
     "addon",
     "tests",
-    "types"
+    "types",
   ]
 }
