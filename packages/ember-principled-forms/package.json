@@ -55,6 +55,7 @@
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.0.0",
+    "ember-lodash": "^4.18.0",
     "ember-lodash-fp": "0.2.0",
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-object-update": "^0.5.1",
