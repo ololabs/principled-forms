@@ -1,15 +1,14 @@
-import Component from "@ember/component";
-import { assert } from "@ember/debug";
-import { action } from "@ember-decorators/object";
+import Component from '@ember/component';
+import { assert } from '@ember/debug';
+import { action } from '@ember-decorators/object';
 
-import { defaultTo, noop, isString, isNil } from "lodash";
-import { Field } from "principled-forms";
-import { Type } from "principled-forms/field";
+import { defaultTo, noop, isString, isNil } from 'lodash';
+import Field, { Type } from 'principled-forms/field';
 
-import { assertNever } from "ember-principled-forms/lib/type-utils";
+import { assertNever } from 'ember-principled-forms/lib/type-utils';
 
 // @ts-ignore: Ignore import of compiled template
-import layout from "./template";
+import layout from './template';
 
 type StringInputType = Type.color | Type.email | Type.password | Type.text;
 
@@ -17,10 +16,7 @@ function parseValue(value: string, type: StringInputType): string;
 function parseValue(value: string, type: Type.number): number;
 function parseValue(value: string, type: Type.checkbox | Type.radio): boolean;
 function parseValue(value: string, type: Type.date): Date;
-function parseValue(
-  value: string,
-  type: Type
-): string | number | boolean | Date {
+function parseValue(value: string, type: Type): string | number | boolean | Date {
   switch (type) {
     case Type.color:
     case Type.email:
@@ -43,13 +39,19 @@ function parseValue(
   }
 }
 
+/**
+  A form field component.
+
+  @class PrincipledFormField
+  @export default
+ */
 export default class PrincipledFormField<T> extends Component {
   layout = layout;
 
   // normal class body definition here
   label: string;
 
-  name: string = this.name || "principled-form-field";
+  name: string = this.name || 'principled-form-field';
   value?: T;
   type: Type = defaultTo(this.type, Type.text);
 
@@ -64,9 +66,9 @@ export default class PrincipledFormField<T> extends Component {
   constructor() {
     super();
 
-    assert("`label` is required", isString(this.label));
+    assert('`label` is required', isString(this.label));
     assert(
-      "at least one of `onChange`, `onInput` is required",
+      'at least one of `onChange`, `onInput` is required',
       this.onChange !== noop || this.onInput !== noop
     );
   }
