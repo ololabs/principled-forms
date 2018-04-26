@@ -1,16 +1,16 @@
+{{!-- BEGIN-SNIPPET docs-viewer.hbs --}}
 {{#docs-viewer as |viewer|}}
 
   {{#viewer.nav as |nav|}}
+    {{nav.section 'Overview'}}
     {{nav.item 'Introduction' 'docs.index'}}
     {{nav.item 'Usage' 'docs.usage'}}
+    {{nav.item 'Components' 'docs.components'}}
   {{/viewer.nav}}
 
   {{#viewer.main}}
-    <div class="docs-container">
-      <div class="docs-section">
-        {{outlet}}
-      </div>
-    </div>
+    {{outlet}}
   {{/viewer.main}}
 
 {{/docs-viewer}}
+{{!-- END-SNIPPET --}}

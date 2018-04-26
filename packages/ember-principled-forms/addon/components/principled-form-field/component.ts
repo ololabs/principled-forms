@@ -64,7 +64,7 @@ export default class PrincipledFormField<T> extends Component {
   onInput?: (newValue: T) => void = defaultTo(this.onInput, noop);
 
   constructor() {
-    super();
+    super(...arguments);
 
     assert('`label` is required', isString(this.label));
     assert(
@@ -74,12 +74,12 @@ export default class PrincipledFormField<T> extends Component {
   }
 
   @action
-  change(newValue: string): void {
+  handleChange(newValue: string): void {
     this.onChange(parseValue(newValue, this.type as any) as any);
   }
 
   @action
-  input(newValue: string): void {
+  handleInput(newValue: string): void {
     this.onInput(parseValue(newValue, this.type as any) as any);
   }
 }

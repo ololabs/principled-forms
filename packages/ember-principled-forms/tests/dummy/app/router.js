@@ -12,6 +12,7 @@ Router.map(function() {
     this.route('api', function() {
       this.route('item', { path: '/*path' });
     });
+    this.route('components');
   });
 
   this.route('not-found', {
