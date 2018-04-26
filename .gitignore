@@ -4,8 +4,10 @@
 ### Ember ###
 # see https://github.com/ember-cli/ember-cli/blob/master/blueprints/app/files/gitignore
 # compiled output
-/dist
-/tmp
+**/dist
+**/tmp
+
+**/build
 
 # dependencies
 **/node_modules
