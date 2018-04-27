@@ -1,35 +1,83 @@
 {{#docs-demo as |demo|}}
-  {{#demo.example name='eager-principled-form-field.hbs'}}
-    {{principled-form-field
-        type=this.user.name.type
-        value=this.user.name.value
+  {{#demo.example name='eager-required-principled-form-field.hbs'}}
+    {{#principled-form-field
         label='Name'
-        onChange=(action 'handleChange' 'name')
+        type=this.user.name.type
         onInput=(action 'handleInput' 'name')
+        as |field|
     }}
+      <label>
+        {{field.label}}
+        <input
+          type={{field.type}}
+          oninput={{field.onInput}}
+          value={{this.user.name.value}}
+        />
+      </label>
+    {{/principled-form-field}}
     <br/>
 
+    Eager: {{this.user.name.eager}}
+    Required: {{this.user.name.isRequired}}
     Value: {{this.user.name.value}}
     Validity: {{this.user.name.validity.type}}
   {{/demo.example}}
 
-  {{demo.snippet 'eager-principled-form-field.hbs'}}
+  {{demo.snippet 'eager-required-principled-form-field.hbs'}}
 {{/docs-demo}}
 
 {{#docs-demo as |demo|}}
-  {{#demo.example name='lazy-principled-form-field.hbs'}}
-    {{principled-form-field
-        type=this.user.age.type
-        value=this.user.age.value
-        label='Age'
-        onChange=(action 'handleChange' 'age')
-        onInput=(action 'handleInput' 'age')
+  {{#demo.example name='eager-optional-principled-form-field.hbs'}}
+    {{#principled-form-field
+        label='Email'
+        type=this.user.email.type
+        onInput=(action 'handleInput' 'email')
+        as |field|
     }}
+      <label>
+        {{field.label}}
+        <input
+          type={{field.type}}
+          oninput={{field.onInput}}
+          value={{this.user.email.value}}
+        />
+      </label>
+    {{/principled-form-field}}
     <br/>
 
+    Eager: {{this.user.email.eager}}
+    Required: {{this.user.email.isRequired}}
+    Value: {{this.user.email.value}}
+    Validity: {{this.user.email.validity.type}}
+  {{/demo.example}}
+
+  {{demo.snippet 'eager-optional-principled-form-field.hbs'}}
+{{/docs-demo}}
+
+{{#docs-demo as |demo|}}
+  {{#demo.example name='lazy-required-principled-form-field.hbs'}}
+    {{#principled-form-field
+        label='Age'
+        type=this.user.age.type
+        onChange=(action 'handleChange' 'age')
+        as |field|
+    }}
+      <label>
+        {{field.label}}
+        <input
+          type={{field.type}}
+          onchange={{field.onChange}}
+          value={{this.user.age.value}}
+        />
+      </label>
+    {{/principled-form-field}}
+    <br/>
+
+    Eager: {{this.user.age.eager}}
+    Required: {{this.user.age.isRequired}}
     Value: {{this.user.age.value}}
     Validity: {{this.user.age.validity.type}}
   {{/demo.example}}
 
-  {{demo.snippet 'lazy-principled-form-field.hbs'}}
+  {{demo.snippet 'lazy-required-principled-form-field.hbs'}}
 {{/docs-demo}}
