@@ -70,7 +70,9 @@ export const required: RequiredRule = <T>(...validators: Validator<T>[]) => (val
     : validators.map(validate => validate(value));
 
 export const optional: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
-  isVoid(value) ? [valid()] : validators.map(validate => validate(value));
+  isVoid(value) || (typeof value === 'string' && value.trim() === '')
+    ? [valid()]
+    : validators.map(validate => validate(value));
 
 export type Validity = Unvalidated | Validated;
 export const Validity = {

@@ -24,7 +24,7 @@ export const Email: FieldConstructors<string> = {
     value = undefined,
     validators = [],
     validity = Validity.unvalidated(),
-  }: RequiredEmailConfig): RequiredField<string> {
+  }: RequiredEmailConfig = {}): RequiredField<string> {
     return Field.required({
       type: Type.email,
       value,
@@ -38,7 +38,7 @@ export const Email: FieldConstructors<string> = {
     value = undefined,
     validators = [],
     validity = Validity.unvalidated(),
-  }: OptionalEmailConfig): OptionalField<string> {
+  }: OptionalEmailConfig = {}): OptionalField<string> {
     return Field.optional({
       type: Type.email,
       value,
