@@ -9,6 +9,7 @@ import Field, { validate } from 'principled-forms/field';
 import EmailField from 'principled-forms/field/email';
 import NumberField from 'principled-forms/field/number';
 import Form, { FromModel } from 'principled-forms/form';
+import { minValue } from 'principled-forms/validators';
 import Validity from 'principled-forms/validity';
 
 // @ts-ignore: Ignore import of compiled template
@@ -17,15 +18,17 @@ import layout from './template';
 type User = {
   age: number;
   name: string;
-  email: Maybe<string>;
+  emailOpt: Maybe<string>;
+  emailReq: string;
 };
 
 const userForm: FromModel<User> = user => ({
   // DISCUSS: Does it actually every make sense for `eager` to be false?
   // Isn't our need for eagerness solved by having a separate unvalidated state?
-  age: NumberField.required({ eager: false }),
-  name: Field.required(),
-  email: EmailField.optional({ validity: Validity.valid() }), 
+  age: NumberField.required({ value: user.age, validators: [minValue(18)] }),
+  name: Field.required({ value: user.name }),
+  emailOpt: EmailField.optional({ value: user.emailOpt }), 
+  emailReq: EmailField.required({ value: user.emailReq }),
 });
 
 type UserForm = Form<User>;
@@ -36,7 +39,7 @@ type FormValue = UserForm[FormProp]['value'];
 export default class FormField extends Component {
   layout = layout;
 
-  user: UserForm = userForm({ age: 30, name: 'Chris', email: Maybe.nothing() });
+  user: UserForm = userForm({ age: 30, name: 'Chris', emailOpt: Maybe.nothing(), emailReq: undefined });
 
   @action
   handleChange(property: FormProp, value: FormValue) {

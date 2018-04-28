@@ -1,5 +1,5 @@
 {{#docs-demo as |demo|}}
-  {{#demo.example name='eager-required-principled-form-field.hbs'}}
+  {{#demo.example name='required-text-principled-form-field.hbs'}}
     {{#principled-form-field
         label='Name'
         type=this.user.name.type
@@ -17,21 +17,20 @@
     {{/principled-form-field}}
     <br/>
 
-    Eager: {{this.user.name.eager}}
     Required: {{this.user.name.isRequired}}
     Value: {{this.user.name.value}}
     Validity: {{this.user.name.validity.type}}
   {{/demo.example}}
 
-  {{demo.snippet 'eager-required-principled-form-field.hbs'}}
+  {{demo.snippet 'required-text-principled-form-field.hbs'}}
 {{/docs-demo}}
 
 {{#docs-demo as |demo|}}
-  {{#demo.example name='eager-optional-principled-form-field.hbs'}}
+  {{#demo.example name='required-email-principled-form-field.hbs'}}
     {{#principled-form-field
-        label='Email'
-        type=this.user.email.type
-        onInput=(action 'handleInput' 'email')
+        label='Email (Required)'
+        type=this.user.emailReq.type
+        onInput=(action 'handleInput' 'emailReq')
         as |field|
     }}
       <label>
@@ -39,25 +38,51 @@
         <input
           type={{field.type}}
           oninput={{field.onInput}}
-          value={{this.user.email.value}}
+          value={{this.user.emailReq.value}}
         />
       </label>
     {{/principled-form-field}}
     <br/>
 
-    Eager: {{this.user.email.eager}}
-    Required: {{this.user.email.isRequired}}
-    Value: {{this.user.email.value}}
-    Validity: {{this.user.email.validity.type}}
+    Required: {{this.user.emailReq.isRequired}}
+    Value: {{this.user.emailReq.value}}
+    Validity: {{this.user.emailReq.validity.type}}
   {{/demo.example}}
 
-  {{demo.snippet 'eager-optional-principled-form-field.hbs'}}
+  {{demo.snippet 'required-email-principled-form-field.hbs'}}
 {{/docs-demo}}
 
 {{#docs-demo as |demo|}}
-  {{#demo.example name='lazy-required-principled-form-field.hbs'}}
+  {{#demo.example name='optional-email-principled-form-field.hbs'}}
     {{#principled-form-field
-        label='Age'
+        label='Email (Optional)'
+        type=this.user.emailOpt.type
+        onInput=(action 'handleInput' 'emailOpt')
+        as |field|
+    }}
+      <label>
+        {{field.label}}
+        <input
+          type={{field.type}}
+          oninput={{field.onInput}}
+          value={{this.user.emailOpt.value}}
+        />
+      </label>
+    {{/principled-form-field}}
+    <br/>
+
+    Required: {{this.user.emailOpt.isRequired}}
+    Value: {{this.user.emailOpt.value}}
+    Validity: {{this.user.emailOpt.validity.type}}
+  {{/demo.example}}
+
+  {{demo.snippet 'optional-email-principled-form-field.hbs'}}
+{{/docs-demo}}
+
+{{#docs-demo as |demo|}}
+  {{#demo.example name='required-number-principled-form-field.hbs'}}
+    {{#principled-form-field
+        label='Age (18 or older)'
         type=this.user.age.type
         onChange=(action 'handleChange' 'age')
         as |field|
@@ -73,11 +98,10 @@
     {{/principled-form-field}}
     <br/>
 
-    Eager: {{this.user.age.eager}}
     Required: {{this.user.age.isRequired}}
     Value: {{this.user.age.value}}
     Validity: {{this.user.age.validity.type}}
   {{/demo.example}}
 
-  {{demo.snippet 'lazy-required-principled-form-field.hbs'}}
+  {{demo.snippet 'required-number-principled-form-field.hbs'}}
 {{/docs-demo}}

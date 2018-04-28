@@ -1,6 +1,6 @@
 import Maybe, { Just, Nothing } from 'true-myth/maybe';
 
-import Validity, { Validator, Validated } from '../validity';
+import Validity, { Validator, Validated, Invalid, Unvalidated, isMissing } from '../validity';
 
 export enum Type {
   email = 'email',
@@ -20,6 +20,14 @@ const _validate = <T>(field: Field<T>): Validated[] => {
   return rule(...field.validators)(field.value);
 };
 
+type OnInvalid = (reason: string) => (Unvalidated | Invalid);
+
+const reduceValidities = (validities: Validated[], onInvalid: OnInvalid = Validity.Invalid.because) => {
+  return validities.every(Validity.isValid)
+    ? Validity.valid()
+    : onInvalid(validities.find(Validity.isInvalid)!.reason); // at least one by definition
+};
+
 export enum Laziness {
   Lazy,
   Eager,
@@ -31,14 +39,12 @@ export function validate<T>(field: Field<T>): Field<T> {
   // We eagerly validate *either* when configured to *or* when the field has
   // already been validated, since in that case any change to invalidity should
   // immediately be flagged to the user.
-  const eagerlyValidate = field.eager || Validity.isValidated(field.validity);
+  const eagerlyValidate = Validity.isValidated(field.validity);
 
-  const onInvalid = (reason: string) =>
+  const onInvalid: OnInvalid = (reason: string) =>
     eagerlyValidate ? Validity.Invalid.because(reason) : Validity.unvalidated();
 
-  const newValidity = validities.every(Validity.isValid)
-    ? Validity.valid()
-    : onInvalid(validities.find(Validity.isInvalid)!.reason); // at least one by definition
+  const newValidity = reduceValidities(validities, onInvalid);
 
   return { ...field, validity: newValidity };
 }
@@ -55,15 +61,12 @@ export interface MinimalField<T> {
 
 export type RequiredFieldConfig<T> = Partial<{
   type: Type;
-  eager: boolean;
-  validity: Validity;
   validators: Array<Validator<T>>;
   value: T;
 }>;
 
 export class RequiredField<T> implements MinimalField<T> {
   value?: T;
-  eager: boolean;
 
   isRequired: true = true;
 
@@ -73,16 +76,13 @@ export class RequiredField<T> implements MinimalField<T> {
 
   constructor({
     type = Type.text,
-    validity = Validity.unvalidated(),
     validators = [],
     value = undefined,
-    eager = true,
   }: RequiredFieldConfig<T> = {}) {
     this.type = type;
     this.value = value;
-    this.eager = eager;
-    this.validity = validity;
     this.validators = validators;
+    this.validity = isMissing(value) ? Validity.unvalidated() : reduceValidities(_validate(this));
   }
 }
 
@@ -90,15 +90,12 @@ const required = <T>(config?: RequiredFieldConfig<T>) => new RequiredField(confi
 
 export type OptionalFieldConfig<T> = Partial<{
   type: Type;
-  eager: boolean;
-  validity: Validity;
   validators: Array<Validator<T>>;
   value: T | Maybe<T>;
 }>;
 
 export class OptionalField<T> implements MinimalField<T> {
   value?: T;
-  eager: boolean;
 
   isRequired: false = false;
 
@@ -108,21 +105,19 @@ export class OptionalField<T> implements MinimalField<T> {
 
   constructor({
     type = Type.text,
-    validity = Validity.unvalidated(),
     validators = [],
     value = undefined,
-    eager = true,
   }: OptionalFieldConfig<T> = {}) {
     if (isMaybe(value)) {
+      // Can this be `value.unwrapOr(undefined)`?
       this.value = value.isJust() ? value.unsafelyUnwrap() : undefined;
     } else {
       this.value = value;
     }
 
     this.type = type;
-    this.eager = eager;
-    this.validity = validity;
     this.validators = validators;
+    this.validity = isMissing(value) ? Validity.valid() : reduceValidities(_validate(this));
   }
 }
 
