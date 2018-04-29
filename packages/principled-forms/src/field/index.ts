@@ -22,7 +22,7 @@ const _validate = <T>(field: Field<T>): Validated[] => {
 
 type OnInvalid = (reason: string) => (Unvalidated | Invalid);
 
-const reduceValidities = (validities: Validated[], onInvalid: OnInvalid = Validity.Invalid.because) => {
+const toSingleValidity = (validities: Validated[], onInvalid: OnInvalid = Validity.Invalid.because) => {
   return validities.every(Validity.isValid)
     ? Validity.valid()
     : onInvalid(validities.find(Validity.isInvalid)!.reason); // at least one by definition
@@ -44,7 +44,7 @@ export function validate<T>(field: Field<T>): Field<T> {
   const onInvalid: OnInvalid = (reason: string) =>
     eagerlyValidate ? Validity.Invalid.because(reason) : Validity.unvalidated();
 
-  const newValidity = reduceValidities(validities, onInvalid);
+  const newValidity = toSingleValidity(validities, onInvalid);
 
   return { ...field, validity: newValidity };
 }
@@ -82,7 +82,7 @@ export class RequiredField<T> implements MinimalField<T> {
     this.type = type;
     this.value = value;
     this.validators = validators;
-    this.validity = isMissing(value) ? Validity.unvalidated() : reduceValidities(_validate(this));
+    this.validity = isMissing(value) ? Validity.unvalidated() : toSingleValidity(_validate(this));
   }
 }
 
@@ -117,7 +117,7 @@ export class OptionalField<T> implements MinimalField<T> {
 
     this.type = type;
     this.validators = validators;
-    this.validity = isMissing(value) ? Validity.valid() : reduceValidities(_validate(this));
+    this.validity = isMissing(value) ? Validity.valid() : toSingleValidity(_validate(this));
   }
 }
 
