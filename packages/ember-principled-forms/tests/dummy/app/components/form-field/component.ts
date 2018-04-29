@@ -41,9 +41,10 @@ export default class FormField extends Component {
 
   user: UserForm = userForm({ age: 30, name: 'Chris', emailOpt: Maybe.nothing(), emailReq: undefined });
 
+  // DISCUSS: Should we supply a `FormBase` component that supplies these actions?
   @action
   handleChange(property: FormProp, value: FormValue) {
-    update(this.user, property, (field) => validate({ ...field, value }) as any);
+    update(this.user, property, (field) => validate({ ...field, value }, true) as any);
   }
 
   @action

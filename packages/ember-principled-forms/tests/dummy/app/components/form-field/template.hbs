@@ -25,11 +25,17 @@
   {{demo.snippet 'required-text-principled-form-field.hbs'}}
 {{/docs-demo}}
 
+{{!--
+DISCUSS: It seems we only need both change and input for text fields that have format requirements.
+We want "lazy" validation while they're filling the field out the first time, but we want "eager"
+validation when they leave the field, i.e. on change. Let's consider calling that out in docs.
+--}}
 {{#docs-demo as |demo|}}
   {{#demo.example name='required-email-principled-form-field.hbs'}}
     {{#principled-form-field
         label='Email (Required)'
         type=this.user.emailReq.type
+        onChange=(action 'handleChange' 'emailReq')
         onInput=(action 'handleInput' 'emailReq')
         as |field|
     }}
@@ -37,6 +43,7 @@
         {{field.label}}
         <input
           type={{field.type}}
+          onchange={{field.onChange}}
           oninput={{field.onInput}}
           value={{this.user.emailReq.value}}
         />

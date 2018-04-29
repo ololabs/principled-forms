@@ -33,13 +33,13 @@ export enum Laziness {
   Eager,
 }
 
-export function validate<T>(field: Field<T>): Field<T> {
+export function validate<T>(field: Field<T>, eager: boolean | undefined = undefined): Field<T> {
   const validities = _validate(field);
 
   // We eagerly validate *either* when configured to *or* when the field has
   // already been validated, since in that case any change to invalidity should
   // immediately be flagged to the user.
-  const eagerlyValidate = Validity.isValidated(field.validity);
+  const eagerlyValidate = eager === undefined ? Validity.isValidated(field.validity) : eager;
 
   const onInvalid: OnInvalid = (reason: string) =>
     eagerlyValidate ? Validity.Invalid.because(reason) : Validity.unvalidated();
