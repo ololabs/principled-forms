@@ -1,0 +1,18 @@
+.demo-heading {
+  padding: 1rem;
+  border-bottom: 1px solid #dae1e7;
+}
+
+.input {
+  border: 1px solid gray;
+  border-radius: 4px;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+.label {
+  color: #333333;
+}

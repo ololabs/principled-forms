@@ -1,0 +1,31 @@
+{{#if (has-block)}}
+
+  {{yield (hash
+      id=this.id
+      isInvalid=this.isInvalid
+      label=label
+      model=model
+      onChange=(action 'handleChange' value='target.value')
+      onInput=(action 'handleInput' value='target.value')
+  )}}
+
+{{else}}
+
+  <label for={{this.id}} class={{labelClass}}>
+    {{label}}
+  </label>
+
+  <input
+      type={{model.type}}
+      oninput={{action 'handleInput' value='target.value'}}
+      onchange={{action 'handleChange' value='target.value'}}
+      value={{this.user.name.value}}
+      class={{inputClass}}
+      value={{model.value}}
+  />
+
+  {{#if this.isInvalid}}
+    <span class={{errorClass}}>{{model.validity.reason}}</span>
+  {{/if}}
+
+{{/if}}
