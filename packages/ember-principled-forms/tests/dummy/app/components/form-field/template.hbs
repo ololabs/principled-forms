@@ -1,35 +1,114 @@
 {{#docs-demo as |demo|}}
-  {{#demo.example name='eager-principled-form-field.hbs'}}
-    {{principled-form-field
-        type=this.user.name.type
-        value=this.user.name.value
+  {{#demo.example name='required-text-principled-form-field.hbs'}}
+    {{#principled-form-field
         label='Name'
-        onChange=(action 'handleChange' 'name')
+        type=this.user.name.type
         onInput=(action 'handleInput' 'name')
+        as |field|
     }}
+      <label>
+        {{field.label}}
+        <input
+          type={{field.type}}
+          oninput={{field.onInput}}
+          value={{this.user.name.value}}
+        />
+      </label>
+    {{/principled-form-field}}
     <br/>
 
+    Required: {{this.user.name.isRequired}}
     Value: {{this.user.name.value}}
     Validity: {{this.user.name.validity.type}}
   {{/demo.example}}
 
-  {{demo.snippet 'eager-principled-form-field.hbs'}}
+  {{demo.snippet 'required-text-principled-form-field.hbs'}}
+{{/docs-demo}}
+
+{{!--
+DISCUSS: It seems we only need both change and input for text fields that have format requirements.
+We want "lazy" validation while they're filling the field out the first time, but we want "eager"
+validation when they leave the field, i.e. on change. Let's consider calling that out in docs.
+--}}
+{{#docs-demo as |demo|}}
+  {{#demo.example name='required-email-principled-form-field.hbs'}}
+    {{#principled-form-field
+        label='Email (Required)'
+        type=this.user.emailReq.type
+        onChange=(action 'handleChange' 'emailReq')
+        onInput=(action 'handleInput' 'emailReq')
+        as |field|
+    }}
+      <label>
+        {{field.label}}
+        <input
+          type={{field.type}}
+          onchange={{field.onChange}}
+          oninput={{field.onInput}}
+          value={{this.user.emailReq.value}}
+        />
+      </label>
+    {{/principled-form-field}}
+    <br/>
+
+    Required: {{this.user.emailReq.isRequired}}
+    Value: {{this.user.emailReq.value}}
+    Validity: {{this.user.emailReq.validity.type}}
+  {{/demo.example}}
+
+  {{demo.snippet 'required-email-principled-form-field.hbs'}}
 {{/docs-demo}}
 
 {{#docs-demo as |demo|}}
-  {{#demo.example name='lazy-principled-form-field.hbs'}}
-    {{principled-form-field
-        type=this.user.age.type
-        value=this.user.age.value
-        label='Age'
-        onChange=(action 'handleChange' 'age')
-        onInput=(action 'handleInput' 'age')
+  {{#demo.example name='optional-email-principled-form-field.hbs'}}
+    {{#principled-form-field
+        label='Email (Optional)'
+        type=this.user.emailOpt.type
+        onInput=(action 'handleInput' 'emailOpt')
+        as |field|
     }}
+      <label>
+        {{field.label}}
+        <input
+          type={{field.type}}
+          oninput={{field.onInput}}
+          value={{this.user.emailOpt.value}}
+        />
+      </label>
+    {{/principled-form-field}}
     <br/>
 
+    Required: {{this.user.emailOpt.isRequired}}
+    Value: {{this.user.emailOpt.value}}
+    Validity: {{this.user.emailOpt.validity.type}}
+  {{/demo.example}}
+
+  {{demo.snippet 'optional-email-principled-form-field.hbs'}}
+{{/docs-demo}}
+
+{{#docs-demo as |demo|}}
+  {{#demo.example name='required-number-principled-form-field.hbs'}}
+    {{#principled-form-field
+        label='Age (18 or older)'
+        type=this.user.age.type
+        onChange=(action 'handleChange' 'age')
+        as |field|
+    }}
+      <label>
+        {{field.label}}
+        <input
+          type={{field.type}}
+          onchange={{field.onChange}}
+          value={{this.user.age.value}}
+        />
+      </label>
+    {{/principled-form-field}}
+    <br/>
+
+    Required: {{this.user.age.isRequired}}
     Value: {{this.user.age.value}}
     Validity: {{this.user.age.validity.type}}
   {{/demo.example}}
 
-  {{demo.snippet 'lazy-principled-form-field.hbs'}}
+  {{demo.snippet 'required-number-principled-form-field.hbs'}}
 {{/docs-demo}}

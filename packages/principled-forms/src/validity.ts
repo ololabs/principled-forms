@@ -64,13 +64,19 @@ export type RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | nu
 
 export type LazinessRule = <T>(validator: Validator<T>) => Validator<T>;
 
+export const isMissing = (value: any): value is null | undefined | '' => {
+  return isVoid(value) || (typeof value === 'string' && value.trim() === '');
+}
+
 export const required: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
-  isVoid(value) || (typeof value === 'string' && value.trim() === '')
+  isMissing(value)
     ? [Invalid.because('field is required')]
     : validators.map(validate => validate(value));
 
 export const optional: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
-  isVoid(value) ? [valid()] : validators.map(validate => validate(value));
+  isMissing(value)
+    ? [valid()]
+    : validators.map(validate => validate(value));
 
 export type Validity = Unvalidated | Validated;
 export const Validity = {
@@ -85,6 +91,7 @@ export const Validity = {
   Valid,
   valid,
   isValid,
+  isMissing,
   required,
   optional,
 };

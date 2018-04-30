@@ -81,7 +81,7 @@ export type Form<T> = Required<
 export const isValid = <T, F extends Form<T>, K extends keyof F>(form: F): boolean =>
   (Object.keys(form) as K[])
     .map(key => form[key] as Field<any>) // `any` b/c TS loses mapped type context here
-    .map(Field.validate)
+    .map(field => Field.validate(field))
     .map(field => field.validity)
     .map(Validity.isValid)
     .reduce((allValid, validity) => allValid && validity, true); // flatMap
