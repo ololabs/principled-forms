@@ -4,7 +4,14 @@ import { action } from '@ember-decorators/object';
 import update from 'ember-object-update';
 import { Maybe } from 'true-myth';
 
-import Field, { validate, Validate } from 'principled-forms/field';
+import Field, {
+// @ts-ignore -- import to resolve name
+  RequiredField,
+  // @ts-ignore -- import to resolve name
+  OptionalField,
+  validate,
+  Validate
+} from 'principled-forms/field';
 import EmailField from 'principled-forms/field/email';
 import NumberField from 'principled-forms/field/number';
 import { FormProp, FormValue, FromModel } from 'principled-forms/form';
