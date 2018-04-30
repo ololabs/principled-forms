@@ -7,7 +7,6 @@
   "author": "Chris Krycho",
   "license": "MIT",
   "dependencies": {
-    "lodash": "4.17.5",
     "true-myth": "1.2.0"
   },
   "devDependencies": {
