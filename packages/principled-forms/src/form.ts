@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
 
-import Field, { OptionalField, RequiredField } from './field';
+import Field, { OptionalField, RequiredField, Validate } from './field';
 import Validity from './validity';
 import { NonNullableFieldNames } from './type-utils';
 
@@ -78,10 +78,13 @@ export type Form<T> = Required<
   }
 >;
 
+export type FormProp<T> = keyof Form<T>;
+export type FormValue<T> = Form<T>[FormProp<T>]['value'];
+
 export const isValid = <T, F extends Form<T>, K extends keyof F>(form: F): boolean =>
   (Object.keys(form) as K[])
     .map(key => form[key] as Field<any>) // `any` b/c TS loses mapped type context here
-    .map(field => Field.validate(field))
+    .map(Field.validate(Validate.Eagerly))
     .map(field => field.validity)
     .map(Validity.isValid)
     .reduce((allValid, validity) => allValid && validity, true); // flatMap
@@ -91,7 +94,7 @@ export type FromModel<T> = (
 ) => Form<T extends Maybe<infer U> ? U : T>;
 
 export const Form = {
-  isValid,
+  isValid
 };
 
 export default Form;

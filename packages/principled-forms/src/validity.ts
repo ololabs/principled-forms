@@ -1,9 +1,9 @@
 import { isVoid } from 'true-myth/utils';
 
 export enum Type {
-  Unvalidated,
-  Invalid,
-  Valid,
+  Unvalidated = 'Unvalidated',
+  Invalid = 'Invalid',
+  Valid = 'Valid'
 }
 
 let UNVALIDATED: Unvalidated;
@@ -66,7 +66,7 @@ export type LazinessRule = <T>(validator: Validator<T>) => Validator<T>;
 
 export const isMissing = (value: any): value is null | undefined | '' => {
   return isVoid(value) || (typeof value === 'string' && value.trim() === '');
-}
+};
 
 export const required: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
   isMissing(value)
@@ -74,9 +74,7 @@ export const required: RequiredRule = <T>(...validators: Validator<T>[]) => (val
     : validators.map(validate => validate(value));
 
 export const optional: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
-  isMissing(value)
-    ? [valid()]
-    : validators.map(validate => validate(value));
+  isMissing(value) ? [valid()] : validators.map(validate => validate(value));
 
 export type Validity = Unvalidated | Validated;
 export const Validity = {
@@ -93,7 +91,7 @@ export const Validity = {
   isValid,
   isMissing,
   required,
-  optional,
+  optional
 };
 
 export default Validity;

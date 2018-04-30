@@ -39,7 +39,16 @@ const chris: User = {
 
 const nobody: Maybe<User> = Maybe.nothing();
 
+function assertType<T>(_value: T): void {}
+
 const chrisForm = fromUser(chris);
 const nobodyForm = fromMaybeUser(nobody);
+
+assertType<Form<User>>(chrisForm);
+assertType<Form<User>>(nobodyForm);
+
 const validChris = Form.isValid(chrisForm);
 const validNobody = Form.isValid(nobodyForm);
+
+assertType<boolean>(validChris);
+assertType<boolean>(validNobody);

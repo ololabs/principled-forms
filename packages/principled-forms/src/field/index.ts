@@ -10,7 +10,7 @@ export enum Type {
   date = 'date',
   password = 'password',
   checkbox = 'checkbox',
-  radio = 'radio',
+  radio = 'radio'
 }
 
 const isMaybe = (v: any): v is Maybe<any> => v instanceof Just || v instanceof Nothing;
@@ -20,33 +20,39 @@ const _validate = <T>(field: Field<T>): Validated[] => {
   return rule(...field.validators)(field.value);
 };
 
-type OnInvalid = (reason: string) => (Unvalidated | Invalid);
+type OnInvalid = (reason: string) => Unvalidated | Invalid;
 
-const toSingleValidity = (validities: Validated[], onInvalid: OnInvalid = Validity.Invalid.because) => {
+const toSingleValidity = (
+  validities: Validated[],
+  onInvalid: OnInvalid = Validity.Invalid.because
+) => {
   return validities.every(Validity.isValid)
     ? Validity.valid()
     : onInvalid(validities.find(Validity.isInvalid)!.reason); // at least one by definition
 };
 
-export enum Laziness {
-  Lazy,
-  Eager,
+export enum Validate {
+  Lazily = 'Lazily',
+  Eagerly = 'Eagerly'
 }
 
-export function validate<T>(field: Field<T>, eager: boolean | undefined = undefined): Field<T> {
-  const validities = _validate(field);
+export function validate<T>(eagerness = Validate.Eagerly) {
+  return (field: Field<T>): Field<T> => {
+    const validities = _validate(field);
 
-  // We eagerly validate *either* when configured to *or* when the field has
-  // already been validated, since in that case any change to invalidity should
-  // immediately be flagged to the user.
-  const eagerlyValidate = eager === undefined ? Validity.isValidated(field.validity) : eager;
+    // We eagerly validate *either* when configured to *or* when the field has
+    // already been validated, since in that case any change to invalidity should
+    // immediately be flagged to the user.
+    const eagerlyValidate =
+      eagerness === Validate.Eagerly ? Validity.isValidated(field.validity) : eagerness;
 
-  const onInvalid: OnInvalid = (reason: string) =>
-    eagerlyValidate ? Validity.Invalid.because(reason) : Validity.unvalidated();
+    const onInvalid: OnInvalid = (reason: string) =>
+      eagerlyValidate ? Validity.Invalid.because(reason) : Validity.unvalidated();
 
-  const newValidity = toSingleValidity(validities, onInvalid);
+    const newValidity = toSingleValidity(validities, onInvalid);
 
-  return { ...field, validity: newValidity };
+    return { ...field, validity: newValidity };
+  };
 }
 
 // <Input @type={{@model.type}} @value={{@model.value}} />
@@ -77,7 +83,7 @@ export class RequiredField<T> implements MinimalField<T> {
   constructor({
     type = Type.text,
     validators = [],
-    value = undefined,
+    value = undefined
   }: RequiredFieldConfig<T> = {}) {
     this.type = type;
     this.value = value;
@@ -106,7 +112,7 @@ export class OptionalField<T> implements MinimalField<T> {
   constructor({
     type = Type.text,
     validators = [],
-    value = undefined,
+    value = undefined
   }: OptionalFieldConfig<T> = {}) {
     if (isMaybe(value)) {
       // Can this be `value.unwrapOr(undefined)`?
@@ -135,7 +141,7 @@ export const Field = {
   Optional: OptionalField,
   required,
   optional,
-  validate,
+  validate
 };
 
 export default Field;

@@ -25,7 +25,12 @@ const chris = {
     familyName: Maybe.just('Krycho')
 };
 const nobody = Maybe.nothing();
+function assertType(_value) { }
 const chrisForm = fromUser(chris);
 const nobodyForm = fromMaybeUser(nobody);
+assertType(chrisForm);
+assertType(nobodyForm);
 const validChris = Form.isValid(chrisForm);
 const validNobody = Form.isValid(nobodyForm);
+assertType(validChris);
+assertType(validNobody);
