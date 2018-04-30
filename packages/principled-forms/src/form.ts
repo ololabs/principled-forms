@@ -84,13 +84,16 @@ export type FormValue<T> = Form<T>[FormProp<T>]['value'];
 export const isValid = <T, F extends Form<T>, K extends keyof F>(form: F): boolean =>
   (Object.keys(form) as K[])
     .map(key => form[key] as Field<any>) // `any` b/c TS loses mapped type context here
-    .map(Field.validate(Validate.Eagerly))
-    .map(field => field.validity)
-    .map(Validity.isValid)
+    .map(field => Field.validate(field, Validate.Lazily))
+    .map(
+      field =>
+        Validity.isValid(field.validity) ||
+        (Validity.isUnvalidated(field.validity) && !field.isRequired)
+    )
     .reduce((allValid, validity) => allValid && validity, true); // flatMap
 
 export type FromModel<T> = (
-  model: T extends Maybe<infer U> ? Maybe<U> : T
+  model: T extends Maybe<infer U> ? Maybe<Partial<U>> : Partial<T>
 ) => Form<T extends Maybe<infer U> ? U : T>;
 
 export const Form = {

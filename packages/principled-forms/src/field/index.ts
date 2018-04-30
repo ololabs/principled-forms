@@ -36,23 +36,20 @@ export enum Validate {
   Eagerly = 'Eagerly'
 }
 
-export function validate<T>(eagerness = Validate.Eagerly) {
-  return (field: Field<T>): Field<T> => {
-    const validities = _validate(field);
+export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly) {
+  const validities = _validate(field);
 
-    // We eagerly validate *either* when configured to *or* when the field has
-    // already been validated, since in that case any change to invalidity should
-    // immediately be flagged to the user.
-    const eagerlyValidate =
-      eagerness === Validate.Eagerly ? Validity.isValidated(field.validity) : eagerness;
+  // We eagerly validate *either* when configured to *or* when the field has
+  // already been validated, since in that case any change to invalidity should
+  // immediately be flagged to the user.
+  const eagerlyValidate = eagerness === Validate.Eagerly || Validity.isValidated(field.validity);
 
-    const onInvalid: OnInvalid = (reason: string) =>
-      eagerlyValidate ? Validity.Invalid.because(reason) : Validity.unvalidated();
+  const onInvalid: OnInvalid = (reason: string) =>
+    eagerlyValidate ? Validity.Invalid.because(reason) : Validity.unvalidated();
 
-    const newValidity = toSingleValidity(validities, onInvalid);
+  const newValidity = toSingleValidity(validities, onInvalid);
 
-    return { ...field, validity: newValidity };
-  };
+  return { ...field, validity: newValidity };
 }
 
 // <Input @type={{@model.type}} @value={{@model.value}} />
@@ -88,7 +85,9 @@ export class RequiredField<T> implements MinimalField<T> {
     this.type = type;
     this.value = value;
     this.validators = validators;
-    this.validity = isMissing(value) ? Validity.unvalidated() : toSingleValidity(_validate(this));
+    this.validity = isMissing(this.value)
+      ? Validity.unvalidated()
+      : toSingleValidity(_validate(this));
   }
 }
 
@@ -115,7 +114,6 @@ export class OptionalField<T> implements MinimalField<T> {
     value = undefined
   }: OptionalFieldConfig<T> = {}) {
     if (isMaybe(value)) {
-      // Can this be `value.unwrapOr(undefined)`?
       this.value = value.isJust() ? value.unsafelyUnwrap() : undefined;
     } else {
       this.value = value;
@@ -123,7 +121,9 @@ export class OptionalField<T> implements MinimalField<T> {
 
     this.type = type;
     this.validators = validators;
-    this.validity = isMissing(value) ? Validity.valid() : toSingleValidity(_validate(this));
+    this.validity = isMissing(this.value)
+      ? Validity.unvalidated()
+      : toSingleValidity(_validate(this));
   }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "principled-forms",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Principled form handling in TypeScript.",
   "module": "build/src/index.js",
   "types": "build/src/index.d.ts",
