@@ -13,7 +13,7 @@ import { minValue, minLength, maxLength } from 'principled-forms/validators';
 // @ts-ignore: Ignore import of compiled template
 import layout from './template';
 
-type User = {
+export type User = {
   age: number;
   name: string;
   secondaryName?: string;

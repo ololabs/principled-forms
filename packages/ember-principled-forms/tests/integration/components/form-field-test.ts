@@ -6,7 +6,7 @@ import hbs from 'htmlbars-inline-precompile';
 import Form from 'principled-forms/form';
 import { Field } from 'principled-forms/field';
 
-type User = {
+export type User = {
   name?: string;
   age: number;
 };
