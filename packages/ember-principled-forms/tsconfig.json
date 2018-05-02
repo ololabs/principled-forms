@@ -34,7 +34,7 @@
         "addon/*"
       ],
       "principled-forms/*": [
-        "node_modules/principled-forms/build/*"
+        "node_modules/@olo/principled-forms/build/*"
       ],
       "true-myth/*": [
         "node_modules/true-myth/dist/types/src/*"

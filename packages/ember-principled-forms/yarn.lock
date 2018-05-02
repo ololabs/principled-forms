@@ -88,6 +88,12 @@
   dependencies:
     "@glimmer/util" "^0.30.5"
 
+"@olo/principled-forms@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@olo/principled-forms/-/principled-forms-0.1.2.tgz#398e503fde65297c5d679e03ba9353163c0ec46a"
+  dependencies:
+    "true-myth" "1.2.0"
+
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
@@ -7643,12 +7649,6 @@ pretty-ms@^3.1.0:
   dependencies:
     parse-ms "^1.0.0"
     plur "^2.1.2"
-
-principled-forms@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/principled-forms/-/principled-forms-0.1.2.tgz#6925cc25a348854f9582a37e0d93a2b4c73c5881"
-  dependencies:
-    "true-myth" "1.2.0"
 
 printf@^0.2.3:
   version "0.2.5"
