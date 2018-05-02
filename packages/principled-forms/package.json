@@ -1,5 +1,5 @@
 {
-  "name": "principled-forms",
+  "name": "@olo/principled-forms",
   "version": "0.1.2",
   "description": "Principled form handling in TypeScript.",
   "module": "build/index.js",
