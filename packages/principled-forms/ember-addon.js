@@ -3,7 +3,7 @@
 const path = require('path');
 
 module.exports = {
-  name: 'principled-forms',
+  name: '@olo/principled-forms',
 
   setupPreprocessorRegistry(type, registry) {
     if (type === 'self') {
