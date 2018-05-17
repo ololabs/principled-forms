@@ -3,8 +3,8 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
-import Form from 'principled-forms/form';
-import { Field } from 'principled-forms/field';
+import Form from '@olo/principled-forms/form';
+import { Field } from '@olo/principled-forms/field';
 
 export type User = {
   name?: string;

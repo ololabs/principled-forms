@@ -11,11 +11,11 @@ import Field, {
   OptionalField,
   validate,
   Validate
-} from 'principled-forms/field';
-import EmailField from 'principled-forms/field/email';
-import NumberField from 'principled-forms/field/number';
-import { FormProp, FormValue, FromModel } from 'principled-forms/form';
-import { minValue, minLength, maxLength } from 'principled-forms/validators';
+} from '@olo/principled-forms/field';
+import EmailField from '@olo/principled-forms/field/email';
+import NumberField from '@olo/principled-forms/field/number';
+import { FormProp, FormValue, FromModel } from '@olo/principled-forms/form';
+import { minValue, minLength, maxLength } from '@olo/principled-forms/validators';
 
 // @ts-ignore: Ignore import of compiled template
 import layout from './template';
