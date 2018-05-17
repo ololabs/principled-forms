@@ -15,6 +15,7 @@
     "typescript": "^2.8.3",
     "typescript-eslint-parser": "eslint/typescript-eslint-parser#ts-2.8"
   },
+  "main": "ember-addon.js",
   "keywords": [
     "ember-addon"
   ],
