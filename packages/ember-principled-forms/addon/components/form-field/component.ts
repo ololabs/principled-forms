@@ -2,10 +2,10 @@ import Component from '@ember/component';
 import { assert } from '@ember/debug';
 import { action, computed } from '@ember-decorators/object';
 
-import Field, { Type } from 'principled-forms/field';
-import { isInvalid } from 'principled-forms/validity';
+import Field, { Type } from '@olo/principled-forms/field';
+import { isInvalid } from '@olo/principled-forms/validity';
 
-import { assertNever } from 'ember-principled-forms/lib/type-utils';
+import { assertNever } from '@olo/ember-principled-forms/lib/type-utils';
 
 // @ts-ignore: Ignore import of compiled template
 import layout from './template';

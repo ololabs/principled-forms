@@ -27,17 +27,11 @@
         "tests/dummy/app/*",
         "app/*"
       ],
-      "ember-principled-forms": [
+      "@olo/ember-principled-forms": [
         "addon"
       ],
-      "ember-principled-forms/*": [
+      "@olo/ember-principled-forms/*": [
         "addon/*"
-      ],
-      "principled-forms/*": [
-        "node_modules/@olo/principled-forms/build/*"
-      ],
-      "true-myth/*": [
-        "node_modules/true-myth/dist/types/src/*"
       ],
       "*": [
         "types/*"

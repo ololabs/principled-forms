@@ -9174,6 +9174,10 @@ trim-right@^1.0.0, trim-right@^1.0.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/true-myth/-/true-myth-1.2.0.tgz#449db3d71507fbe290ae62a409db12ae8f90a393"
 
+"true-myth@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/true-myth/-/true-myth-2.0.0.tgz#dd5001af16c600e03039e03eb7a56c45615dfde9"
+
 try-resolve@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/try-resolve/-/try-resolve-1.0.1.tgz#cfde6fabd72d63e5797cfaab873abbe8e700e912"
@@ -9221,19 +9225,19 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
+typescript-eslint-parser@15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/typescript-eslint-parser/-/typescript-eslint-parser-15.0.0.tgz#882fd3d7aabffbab0a7f98d2a59fb9a989c2b37f"
+  dependencies:
+    lodash.unescape "4.0.1"
+    semver "5.5.0"
+
 typescript-eslint-parser@^11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/typescript-eslint-parser/-/typescript-eslint-parser-11.0.0.tgz#37dba6a0130dd307504aa4b4b21b0d3dc7d4e9f2"
   dependencies:
     lodash.unescape "4.0.1"
     semver "5.4.1"
-
-typescript-eslint-parser@eslint/typescript-eslint-parser#ts-2.8:
-  version "14.0.0"
-  resolved "https://codeload.github.com/eslint/typescript-eslint-parser/tar.gz/403ec1fff4fade5c04782f6f0ac461b02358c35a"
-  dependencies:
-    lodash.unescape "4.0.1"
-    semver "5.5.0"
 
 typescript@^2.5.1, typescript@^2.8.3:
   version "2.8.3"

@@ -3,11 +3,11 @@
 const path = require('path');
 
 module.exports = {
-  name: 'principled-forms',
+  name: '@olo/principled-forms',
 
   setupPreprocessorRegistry(type, registry) {
     if (type === 'self') {
-      this.treePaths.addon = path.resolve(__dirname, 'build');
+      this.treePaths.addon = path.resolve(__dirname, 'dist');
 
       registry.add('js', {
         name: 'babel-with-app-settings',
