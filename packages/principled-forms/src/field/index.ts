@@ -1,5 +1,9 @@
 import Maybe, { Just, Nothing } from 'true-myth/maybe';
 
+// These are to make TS happy.
+Just;
+Nothing;
+
 import Validity, { Validator, Validated, Invalid, Unvalidated, isMissing } from '../validity';
 
 export enum Type {
@@ -12,8 +16,6 @@ export enum Type {
   checkbox = 'checkbox',
   radio = 'radio'
 }
-
-const isMaybe = (v: any): v is Maybe<any> => v instanceof Just || v instanceof Nothing;
 
 const _validate = <T>(field: Field<T>): Validated[] => {
   const rule = field.isRequired ? Validity.required : Validity.optional;
@@ -51,8 +53,6 @@ export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly) {
 
   return { ...field, validity: newValidity };
 }
-
-// <Input @type={{@model.type}} @value={{@model.value}} />
 
 export interface MinimalField<T> {
   value?: T;
@@ -113,7 +113,7 @@ export class OptionalField<T> implements MinimalField<T> {
     validators = [],
     value = undefined
   }: OptionalFieldConfig<T> = {}) {
-    if (isMaybe(value)) {
+    if (Maybe.isInstance<T>(value)) {
       this.value = value.isJust() ? value.unsafelyUnwrap() : undefined;
     } else {
       this.value = value;

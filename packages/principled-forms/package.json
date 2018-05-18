@@ -7,7 +7,7 @@
   "author": "Chris Krycho",
   "license": "MIT",
   "dependencies": {
-    "true-myth": "1.2.0"
+    "true-myth": "2.0.0"
   },
   "devDependencies": {
     "ember-cli": "3.1.2",
