@@ -7,7 +7,7 @@ module.exports = {
 
   setupPreprocessorRegistry(type, registry) {
     if (type === 'self') {
-      this.treePaths.addon = path.resolve(__dirname, 'build');
+      this.treePaths.addon = path.resolve(__dirname, 'dist');
 
       registry.add('js', {
         name: 'babel-with-app-settings',

@@ -13,7 +13,9 @@
     "ember-cli": "3.1.2",
     "prettier-eslint": "8.8.1",
     "typescript": "^2.8.3",
-    "typescript-eslint-parser": "eslint/typescript-eslint-parser#ts-2.8"
+    "typescript-eslint-parser": "15.0.0",
+    "rimraf": "2.6.2",
+    "shelljs": "^0.8.2"
   },
   "main": "ember-addon.js",
   "keywords": [
@@ -23,6 +25,17 @@
     "main": "ember-addon.js"
   },
   "scripts": {
-    "build": "tsc"
-  }
+    "ts:src": "tsc",
+    "ts:typedefs": "tsc --declaration --outDir . --emitDeclarationOnly",
+    "ts:all": "yarn ts:src && yarn ts:typedefs",
+    "clean": "rimraf *.d.ts field/*.d.ts dist",
+    "build": "yarn clean && yarn ts:all",
+    "prepublishOnly": "build",
+    "postpublish": "clean"
+  },
+  "files": [
+    "*.d.ts",
+    "field/*.d.ts",
+    "dist"
+  ]
 }
