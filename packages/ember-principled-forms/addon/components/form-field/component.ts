@@ -13,6 +13,8 @@ import { isNone } from '@ember/utils';
 
 type StringInputType = Type.color | Type.email | Type.password | Type.text;
 
+export type HTMLAttribute = string | undefined | boolean | number;
+
 const noop = (..._args: any[]) => {};
 
 // From _.isString, simplified very slightly.
@@ -68,10 +70,27 @@ export default class FormField<T> extends Component {
   get isInvalid() {
     return isInvalid(this.model.validity);
   }
+  
+  @computed('model.isRequired')
+  get required(): HTMLAttribute {
+    return this.model.isRequired ? true : undefined;
+  }
+
+  @computed('isInvalid')
+  get ariaInvalid(): HTMLAttribute {
+    const isValid = !this.isInvalid;
+    return isValid ? undefined : "true";
+  }
 
   // DISCUSS: What other useful defaults can we apply?
   // e.g. an ARIA object
   id: string = defaultTo(this.id, `form-field-${this.model.type}-${this.label}`);
+  errorId: string = defaultTo(`${this.id}-error`, `form-field-${this.model.type}-${this.label}-error`);
+
+  @computed('isInvalid')
+  get ariaDescribedBy(): HTMLAttribute {
+    return this.isInvalid ? this.errorId : undefined;
+  }
 
   onChange: (newValue: T) => void = defaultTo(this.onChange, noop);
   onInput: (newValue: T) => void = defaultTo(this.onInput, noop);

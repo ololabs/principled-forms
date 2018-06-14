@@ -554,6 +554,10 @@ aws4@^1.2.1, aws4@^1.6.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.7.0.tgz#d4d0e9b9dbfca77bf08eeb0a8a471550fe39e289"
 
+axe-core@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-2.6.1.tgz#28772c4f76966d373acda35b9a409299dc00d1b5"
+
 babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
@@ -2866,6 +2870,16 @@ electron-to-chromium@^1.3.30:
   version "1.3.44"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.44.tgz#ef6b150a60d523082388cadad88085ecd2fd4684"
 
+ember-a11y-testing@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/ember-a11y-testing/-/ember-a11y-testing-0.5.2.tgz#0ee555824a8e8181c55470e261b88dad4fdac721"
+  dependencies:
+    axe-core "^2.6.1"
+    broccoli-funnel "^2.0.1"
+    ember-cli-babel "^6.8.2"
+    ember-cli-version-checker "^2.1.0"
+    ember-get-config "^0.2.4"
+
 ember-ace@^1.2.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/ember-ace/-/ember-ace-1.3.1.tgz#b690cd1fe09a65a264dec40f9a54050af982a8da"
@@ -3631,6 +3645,13 @@ ember-fetch@^3.4.4:
     ember-cli-babel "^6.8.2"
     node-fetch "^2.0.0-alpha.9"
     whatwg-fetch "^2.0.3"
+
+ember-get-config@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/ember-get-config/-/ember-get-config-0.2.4.tgz#118492a2a03d73e46004ed777928942021fe1ecd"
+  dependencies:
+    broccoli-file-creator "^1.1.1"
+    ember-cli-babel "^6.3.0"
 
 ember-getowner-polyfill@^2.0.1:
   version "2.2.0"
