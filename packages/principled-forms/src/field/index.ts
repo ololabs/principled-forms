@@ -135,6 +135,7 @@ export interface FieldConstructors<T> {
 export const Field = {
   Required: RequiredField,
   Optional: OptionalField,
+  Type,
   required,
   optional,
   validate
