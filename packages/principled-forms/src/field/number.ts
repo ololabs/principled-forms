@@ -13,18 +13,21 @@ type OptionalNumberConfig = Partial<{
   validators: Array<Validator<number>>;
 }>;
 
-export const Number: FieldConstructors<number> = {
-  required({ validators = [], value = undefined }: RequiredNumberConfig = {}): RequiredField<
-    number
-  > {
-    return Field.required({ type: Type.number, validators, value });
-  },
+export const required = ({
+  validators = [],
+  value = undefined
+}: RequiredNumberConfig = {}): RequiredField<number> =>
+  Field.required({ type: Type.number, validators, value });
 
-  optional({ validators = [], value = undefined }: OptionalNumberConfig = {}): OptionalField<
-    number
-  > {
-    return Field.optional({ type: Type.number, validators, value });
-  }
+export const optional = ({
+  validators = [],
+  value = undefined
+}: OptionalNumberConfig = {}): OptionalField<number> =>
+  Field.optional({ type: Type.number, validators, value });
+
+export const Number: FieldConstructors<number> = {
+  required,
+  optional
 };
 
 export type NumberField = Field<number>;
