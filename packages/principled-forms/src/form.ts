@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
 
-import Field, { OptionalField, RequiredField, Validate } from './field';
+import Field, { OptionalField, RequiredField } from './field';
 import Validity from './validity';
 import { NonNullableFieldNames } from './type-utils';
 
@@ -81,23 +81,34 @@ export type Form<T> = Required<
 export type FormProp<T> = keyof Form<T>;
 export type FormValue<T> = Form<T>[FormProp<T>]['value'];
 
-export const isValid = <T, F extends Form<T>, K extends keyof F>(form: F): boolean =>
-  (Object.keys(form) as K[])
-    .map(key => form[key] as Field<any>) // `any` b/c TS loses mapped type context here
-    .map(field => Field.validate(field, Validate.Lazily))
-    .map(
-      field =>
-        Validity.isValid(field.validity) ||
-        (Validity.isUnvalidated(field.validity) && !field.isRequired)
-    )
-    .reduce((allValid, validity) => allValid && validity, true); // flatMap
+type Validated<F> = { form: F; isValid: boolean };
+
+export const validate = <T, F extends Form<T>, K extends Extract<keyof F, string>>(
+  formToValidate: F
+): Validated<F> =>
+  (Object.entries(formToValidate) as [K, F[K]][])
+    .map(([k, v]) => [k, Field.validate(v as Field<any>) as any] as [K, F[K]])
+    .reduce(
+      (validated, [k, v]) =>
+        ({
+          form: { ...(validated.form as object), [k]: v } as any,
+          isValid: validated.isValid && Validity.isValid((v as Field<any>).validity)
+        } as Validated<F>),
+      {
+        form: {},
+        isValid: true
+      } as Validated<F>
+    );
+
+export const isValid = <T, F extends Form<T>>(form: F): boolean => validate(form).isValid;
 
 export type FromModel<T> = (
   model: T extends Maybe<infer U> ? Maybe<Partial<U>> : Partial<T>
 ) => Form<T extends Maybe<infer U> ? U : T>;
 
 export const Form = {
-  isValid
+  isValid,
+  validate
 };
 
 export default Form;
