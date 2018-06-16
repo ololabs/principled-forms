@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
 
-import Field, { FieldConstructors, Type, RequiredField, OptionalField } from '.';
+import Field, { FieldConstructors, Type, RequiredField, OptionalField } from '../field';
 import { Validator, Validity } from '../validity';
 import { regex } from '../validators';
 
@@ -20,27 +20,25 @@ type OptionalEmailConfig = Partial<{
 }>;
 
 export const Email: FieldConstructors<string> = {
-  required({
-    value = undefined,
-    validators = [],
-  }: RequiredEmailConfig = {}): RequiredField<string> {
+  required({ value = undefined, validators = [] }: RequiredEmailConfig = {}): RequiredField<
+    string
+  > {
     return Field.required({
       type: Type.email,
       value,
-      validators: [emailValidator].concat(validators),
+      validators: [emailValidator].concat(validators)
     });
   },
 
-  optional({
-    value = undefined,
-    validators = [],
-  }: OptionalEmailConfig = {}): OptionalField<string> {
+  optional({ value = undefined, validators = [] }: OptionalEmailConfig = {}): OptionalField<
+    string
+  > {
     return Field.optional({
       type: Type.email,
       value,
-      validators: [emailValidator].concat(validators),
+      validators: [emailValidator].concat(validators)
     });
-  },
+  }
 };
 
 export type Email = Field<string>;

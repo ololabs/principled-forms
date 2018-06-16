@@ -1,10 +1,6 @@
-import Maybe, { Just, Nothing } from 'true-myth/maybe';
+import { Maybe } from 'true-myth';
 
-// These are to make TS happy.
-Just;
-Nothing;
-
-import Validity, { Validator, Validated, Invalid, Unvalidated, isMissing } from '../validity';
+import Validity, { Validator, Validated, Invalid, Unvalidated, isMissing } from './validity';
 
 export enum Type {
   email = 'email',
@@ -34,11 +30,11 @@ const toSingleValidity = (
 };
 
 export enum Validate {
-  Lazily = 'Lazily',
-  Eagerly = 'Eagerly'
+  Lazily,
+  Eagerly
 }
 
-export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly) {
+export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly): Field<T> {
   const validities = _validate(field);
 
   // We eagerly validate *either* when configured to *or* when the field has
@@ -69,9 +65,9 @@ export type RequiredFieldConfig<T> = Partial<{
 }>;
 
 export class RequiredField<T> implements MinimalField<T> {
-  value?: T;
+  readonly value?: T;
 
-  isRequired: true = true;
+  readonly isRequired: true = true;
 
   readonly type: Type;
   readonly validators: Array<Validator<T>>;
@@ -100,9 +96,9 @@ export type OptionalFieldConfig<T> = Partial<{
 }>;
 
 export class OptionalField<T> implements MinimalField<T> {
-  value?: T;
+  readonly value?: T;
 
-  isRequired: false = false;
+  readonly isRequired: false = false;
 
   readonly type: Type;
   readonly validators: Array<Validator<T>>;
@@ -129,16 +125,18 @@ export class OptionalField<T> implements MinimalField<T> {
 
 const optional = <T>(config?: OptionalFieldConfig<T>) => new OptionalField(config);
 
-export type Field<T> = RequiredField<T> | OptionalField<T>;
-
 export interface FieldConstructors<T> {
   required(options?: RequiredFieldConfig<T>): RequiredField<T>;
   optional(options?: OptionalFieldConfig<T>): OptionalField<T>;
 }
 
+export type Field<T> = RequiredField<T> | OptionalField<T>;
+
 export const Field = {
   Required: RequiredField,
   Optional: OptionalField,
+  Type,
+  Validate,
   required,
   optional,
   validate
