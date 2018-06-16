@@ -1,4 +1,4 @@
-import { isVoid } from 'true-myth/utils';
+const isVoid = (value: any) => value === undefined || value === null;
 
 export enum Type {
   Unvalidated = 'Unvalidated',
@@ -9,8 +9,6 @@ export enum Type {
 let UNVALIDATED: Unvalidated;
 export class Unvalidated {
   type: Type.Unvalidated = Type.Unvalidated;
-
-  constructor() {}
 
   static create(): Unvalidated {
     if (isVoid(UNVALIDATED)) {
@@ -40,8 +38,6 @@ export const isInvalid = (v: Validity): v is Invalid => v.type === Type.Invalid;
 let VALID: Valid;
 export class Valid {
   type: Type.Valid = Type.Valid;
-
-  constructor() {}
 
   static create() {
     if (isVoid(VALID)) {
