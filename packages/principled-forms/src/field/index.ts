@@ -1,8 +1,4 @@
-import Maybe, { Just, Nothing } from 'true-myth/maybe';
-
-// These are to make TS happy.
-Just;
-Nothing;
+import { Maybe } from 'true-myth';
 
 import Validity, { Validator, Validated, Invalid, Unvalidated, isMissing } from '../validity';
 
@@ -38,7 +34,7 @@ export enum Validate {
   Eagerly = 'Eagerly'
 }
 
-export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly) {
+export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly): Field<T> {
   const validities = _validate(field);
 
   // We eagerly validate *either* when configured to *or* when the field has
