@@ -1,5 +1,6 @@
 import Field from '../../src/field';
-import { Invalid, Valid } from '../../src/validity';
+import { Invalid, Valid, Validity } from '../../src/validity';
+import { minValue } from '../../src/validators';
 
 /*
 export const Field = {
@@ -14,11 +15,22 @@ export const Field = {
 describe('`field` module', () => {
   describe('`required` function', () => {
     test('with no arguments', () => {
-      const f = Field.required();
+      const validated = Field.validate(Field.required<number>());
+      expect(validated.validity.type).toBe(Validity.Type.Invalid);
+      expect((validated.validity as Invalid).reason).toBe('field is required');
     });
 
     test('with arguments', () => {
-      const f = Field.required({ type: Field.Type.text, value: 'what' });
+      const unset = Field.validate(Field.required({ validators: [minValue(10)] }));
+      expect(unset.validity.type).toBe(Validity.Type.Invalid);
+      expect((unset.validity as Invalid).reason).toBe('field is required');
+
+      const tooYoung = Field.validate(Field.required({ value: 16, validators: [minValue(18)] }));
+      expect(tooYoung.validity.type).toBe(Validity.Type.Invalid);
+      expect((tooYoung.validity as Invalid).reason).toBe('Must be at least 18');
+
+      const oldEnough = Field.validate(Field.required({ value: 21, validators: [minValue(18)] }));
+      expect(oldEnough.validity.type).toBe(Validity.Type.Valid);
     });
   });
 
@@ -34,5 +46,9 @@ describe('`field` module', () => {
     });
   });
 
-  test('`validate` function', () => {});
+  describe('`validate` function', () => {
+    test('with `Validate.Eagerly`', () => {});
+
+    test('with `Validate.Lazily', () => {});
+  });
 });
