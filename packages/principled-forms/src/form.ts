@@ -1,7 +1,8 @@
+import { mapValues } from 'lodash/fp';
 import { Maybe } from 'true-myth';
 
 import Field, { OptionalField, RequiredField } from './field';
-import Validity from './validity';
+import Validity, { Type } from './validity';
 import { NonNullableFieldNames } from './type-utils';
 
 /**
@@ -70,7 +71,7 @@ import { NonNullableFieldNames } from './type-utils';
   to work, since otherwise its types are `ComputedProperty` instances. Types
   which do not have class properties on them will Just Work™.
  */
-export type Form<T> = Required<
+type FormModel<T> = Required<
   {
     [K in keyof T]: K extends NonNullableFieldNames<T>
       ? T[K] extends Maybe<infer U> ? OptionalField<U> : RequiredField<T[K]>
@@ -78,37 +79,77 @@ export type Form<T> = Required<
   }
 >;
 
-export type FormProp<T> = keyof Form<T>;
-export type FormValue<T> = Form<T>[FormProp<T>]['value'];
+export const validateModel = mapValues(Field.validate);
 
-type Validated<F> = { form: F; isValid: boolean };
+export class Unvalidated<T> {
+  readonly type: Type.Unvalidated = Type.Unvalidated;
+  constructor(readonly model: FormModel<T>) {}
+  static create<A>(model: FormModel<A>) {
+    return new Unvalidated(model);
+  }
+}
 
-export const validate = <T, F extends Form<T>, K extends Extract<keyof F, string>>(
-  formToValidate: F
-): Validated<F> =>
-  (Object.entries(formToValidate) as [K, F[K]][])
-    .map(([k, v]) => [k, Field.validate(v as Field<any>) as any] as [K, F[K]])
-    .reduce(
-      (validated, [k, v]) =>
-        ({
-          form: { ...(validated.form as object), [k]: v } as any,
-          isValid: validated.isValid && Validity.isValid((v as Field<any>).validity)
-        } as Validated<F>),
-      {
-        form: {},
-        isValid: true
-      } as Validated<F>
-    );
+export const isUnvalidated = <T = any>(form: Form<any>): form is Unvalidated<T> =>
+  Validity.Type.Unvalidated === form.type;
 
-export const isValid = <T, F extends Form<T>>(form: F): boolean => validate(form).isValid;
+export class Invalid<T> {
+  readonly type: Type.Invalid = Type.Invalid;
+  constructor(readonly model: FormModel<T>) {}
+  static create<A>(model: FormModel<A>) {
+    return new Invalid(model);
+  }
+}
+
+export const isInvalid = <T = any>(form: Form<any>): form is Invalid<T> =>
+  Validity.Type.Invalid === form.type;
+
+export class Valid<T> {
+  readonly type: Type.Valid = Type.Valid;
+  constructor(readonly model: FormModel<T>) {}
+  static create<A>(model: FormModel<A>) {
+    return new Valid(model);
+  }
+}
+
+export const isValid = <T = any>(form: Form<T>): form is Valid<T> =>
+  Validity.Type.Valid === form.type;
+
+export type Form<T> = Unvalidated<T> | Invalid<T> | Valid<T>;
+export const Form = {
+  Type,
+  Unvalidated,
+  Invalid,
+  Valid,
+  isUnvalidated,
+  isInvalid,
+  isValid
+};
+
+export default Form;
+
+export class _Form<T> {
+  constructor(readonly model: FormModel<T>, readonly validity: Validity = Validity.unvalidated()) {}
+
+  static validate<T, F extends Form<T>>(form: F): F {
+    return validateModel(form.model) as F;
+  }
+
+  static validateModel<T, FM extends FormModel<T>>(model: FM): FM {
+    return validateModel(model) as FM;
+  }
+
+  get isValid(): boolean {
+    return isValid(this);
+  }
+
+  validate(): Form<T> {
+    return Form.validate<T, Form<T>>(this);
+  }
+}
+
+export type FormProp<T> = keyof Form<T>['model'];
+export type FormValue<T> = Form<T>['model'][FormProp<T>]['value'];
 
 export type FromModel<T> = (
   model: T extends Maybe<infer U> ? Maybe<Partial<U>> : Partial<T>
 ) => Form<T extends Maybe<infer U> ? U : T>;
-
-export const Form = {
-  isValid,
-  validate
-};
-
-export default Form;
