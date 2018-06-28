@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
 
-import Validity, { Validator, Validated, Invalid, Unvalidated, isMissing } from './validity';
+import Validity, { Validator, Validated, Invalid, Unvalidated, isMissing, valid } from './validity';
 
 export enum Type {
   email = 'email',
@@ -13,10 +13,16 @@ export enum Type {
   radio = 'radio'
 }
 
-const _validate = <T>(field: Field<T>): Validated[] => {
-  const rule = field.isRequired ? Validity.required : Validity.optional;
-  return rule(...field.validators)(field.value);
-};
+const _required = <T>(field: RequiredField<T>): Validated[] =>
+  isMissing(field.value)
+    ? [Invalid.because(field.messageIfMissing)]
+    : field.validators.map(validate => validate(field.value!));
+
+const _optional = <T>(field: OptionalField<T>): Validated[] =>
+  isMissing(field.value) ? [valid()] : field.validators.map(validate => validate(field.value!));
+
+const _validate = <T>(field: Field<T>): Validated[] =>
+  field.isRequired ? _required(field) : _optional(field);
 
 type OnInvalid = (reason: string) => Unvalidated | Invalid;
 
@@ -52,7 +58,6 @@ export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly): Fiel
 
 export interface MinimalField<T> {
   value?: T;
-  isRequired: boolean;
   readonly type: Type;
   readonly validators: Validator<T>[];
   readonly validity: Validity;
@@ -62,7 +67,10 @@ export type RequiredFieldConfig<T> = Partial<{
   type: Type;
   validators: Array<Validator<T>>;
   value: T;
+  messageIfMissing: string;
 }>;
+
+export const DEFAULT_MISSING_MESSAGE = 'field is required';
 
 export class RequiredField<T> implements MinimalField<T> {
   readonly value?: T;
@@ -72,15 +80,18 @@ export class RequiredField<T> implements MinimalField<T> {
   readonly type: Type;
   readonly validators: Array<Validator<T>>;
   readonly validity: Validity;
+  readonly messageIfMissing: string;
 
   constructor({
     type = Type.text,
     validators = [],
-    value = undefined
+    value = undefined,
+    messageIfMissing = DEFAULT_MISSING_MESSAGE
   }: RequiredFieldConfig<T> = {}) {
     this.type = type;
     this.value = value;
     this.validators = validators;
+    this.messageIfMissing = messageIfMissing;
     this.validity = isMissing(this.value)
       ? Validity.unvalidated()
       : toSingleValidity(_validate(this));

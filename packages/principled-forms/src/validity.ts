@@ -1,3 +1,5 @@
+import Field from './field';
+
 const isVoid = (value: any): value is undefined | null => value === undefined || value === null;
 
 export enum Type {
@@ -56,21 +58,13 @@ export const isValidated = (v: Validity): v is Validated => !isUnvalidated(v);
 
 export type Validator<T> = (value: T) => Validated;
 
-export type RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) => Validated[];
+export type RequiredRule = <T>(...validators: Validator<T>[]) => (field: Field<T>) => Validated[];
 
 export type LazinessRule = <T>(validator: Validator<T>) => Validator<T>;
 
 export const isMissing = (value: any): value is null | undefined | '' => {
   return isVoid(value) || (typeof value === 'string' && value.trim() === '');
 };
-
-export const required: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
-  isMissing(value)
-    ? [Invalid.because('field is required')]
-    : validators.map(validate => validate(value));
-
-export const optional: RequiredRule = <T>(...validators: Validator<T>[]) => (value?: T | null) =>
-  isMissing(value) ? [valid()] : validators.map(validate => validate(value));
 
 export type Validity = Unvalidated | Validated;
 export const Validity = {
@@ -85,9 +79,7 @@ export const Validity = {
   Valid,
   valid,
   isValid,
-  isMissing,
-  required,
-  optional
+  isMissing
 };
 
 export default Validity;

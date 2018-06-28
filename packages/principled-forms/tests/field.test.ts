@@ -1,4 +1,4 @@
-import Field, { Validate } from '../src/field';
+import Field, { Validate, DEFAULT_MISSING_MESSAGE } from '../src/field';
 import { Invalid, Valid, Validity } from '../src/validity';
 import { minValue, minLength } from '../src/validators';
 import { Maybe } from 'true-myth';
@@ -8,14 +8,14 @@ describe('`field` module', () => {
     test('with no arguments', () => {
       const validated = Field.validate(Field.required<number>());
       expect(validated.validity.type).toBe(Validity.Type.Invalid);
-      expect((validated.validity as Invalid).reason).toBe('field is required');
+      expect((validated.validity as Invalid).reason).toBe(DEFAULT_MISSING_MESSAGE);
     });
 
     describe('with validators', () => {
       test('with no value', () => {
         const unset = Field.validate(Field.required({ validators: [minValue(10)] }));
         expect(unset.validity.type).toBe(Validity.Type.Invalid);
-        expect((unset.validity as Invalid).reason).toBe('field is required');
+        expect((unset.validity as Invalid).reason).toBe(DEFAULT_MISSING_MESSAGE);
       });
 
       test('with wrong value', () => {
@@ -208,7 +208,7 @@ describe('`field` module', () => {
       });
 
       test('treats `Just` as its value', () => {
-        let just = Maybe.just(5);
+        const just = Maybe.just(5);
         expect(Field.optional({ value: just }).value).toBe(5);
       });
     });
@@ -221,10 +221,16 @@ describe('`field` module', () => {
       });
 
       test('treats `Just` as an actual value', () => {
-        let just = Maybe.just(5);
-        let field = Field.required({ value: just });
+        const just = Maybe.just(5);
+        const field = Field.required({ value: just });
         expect(field.value!.variant).toBe(Maybe.Variant.Just);
       });
     });
+  });
+
+  test('custom missing field message', () => {
+    const messageIfMissing = 'You forgot something, silly one!';
+    const empty = Field.required({ messageIfMissing });
+    expect((Field.validate(empty).validity as Invalid).reason).toBe(messageIfMissing);
   });
 });
