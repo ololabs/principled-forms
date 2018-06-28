@@ -19,7 +19,7 @@ import { NonNullableFieldNames } from './type-utils';
   export type User = {
     age: number;
     name?: string;
-    description: Maybe<string>;
+    homeTown: Maybe<string>;
     attributes: string[];
   };
   ```
@@ -30,13 +30,13 @@ import { NonNullableFieldNames } from './type-utils';
   type Form<User> = {
     age: RequiredField<number>;
     name: OptionalField<string>;
-    description: OptionalField<string>;
+    homeTown: OptionalField<string>;
   }
   ```
 
   This is useful for constraining the type of a form model in your application.
 
-  For example, you might do this at a top-level component in Ember.js (3.1+):
+  For example, you might do this at a top-level component in Ember.js 3.1+:
 
   ```ts
   import Component from '@ember/component';
@@ -48,9 +48,9 @@ import { NonNullableFieldNames } from './type-utils';
   import User from 'my-app/models/user';
 
   const modelFromUser: FromModel<User> = user => ({
-    age: Field.required({ type: Type.number, value: user.age, validators: [minValue(0)] }),
+    age: Field.required({ type: Type.number, value: user.age, validators: [minValue(13)] }),
     name: Field.optional({ value: user.name }),
-    description: Field.optional({ value: user.description }),
+    homeTown: Field.optional({ value: user.homeTown }),
   });
 
   export default class UserInfo extends Component {
@@ -65,10 +65,9 @@ import { NonNullableFieldNames } from './type-utils';
   }
   ```
 
-  Note that if the persistence layer model here is an Ember Data model, it
-  _must_ be using ES6 class syntax with Ember Decorators in Ember 3.1+ for this
-  to work, since otherwise its types are `ComputedProperty` instances. Types
-  which do not have class properties on them will Just Work™.
+  Note that `model` here is *not* an Ember Data model, but the same `User` type
+  given above; for notes on Ember Data types, see the `ember-principled-forms`
+  documentation.
  */
 export type Form<T> = Required<
   {
