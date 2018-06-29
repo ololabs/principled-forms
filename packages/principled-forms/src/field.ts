@@ -40,6 +40,42 @@ export enum Validate {
   Eagerly
 }
 
+/**
+  Validate a form field.
+
+  The result of validating a `Field` is a new `Field` with the computed validity
+  for the field passed in (`field` is never mutated).
+
+  Validation may be performed "eagerly" or "lazily".
+  
+  - In eager validation, a field's validity always becomes `Invalid` or `Valid`,
+    regardless of its initial valiidity.
+  - In lazy validation, if the `validity` of `field` is `Unvalidated`, then it
+    remains `Unvalidated` if the validation fails, or becomes `Valid` if the
+    validation succeeds.
+
+  This distinction is useful for times when it is not desirable to immediately
+  treat a field as "invalid" while the user is entering information. For
+  example, when validating an email address, the *partial* state -- when a user
+  has typed `my-name@some-domain.` but has not yet typed the TLD -- it may not
+  make sense to tell the user their email is invalid. After all: they *know* it
+  is not yet valid, because they are still typing it in! In that case, you might
+  validate the form lazily on `input` events but eagerly on `change` or `blur`
+  events. In that flow, the user will be informed that their email is invalid
+  if they:
+
+  - have typed a valid email and then change it to be invalid
+  - leave the form
+  - have previously filled out the field and edit it and it is not valid
+
+  However, it will *not* be invalid while the user is first typing in their
+  email.
+  
+  @param field The `Field` to validate.
+  @param eagerness Whether a `Field` currently in an `Unvalidated` state should
+                   transition to `Invalid` if it is invalid, or remain
+                   `Unvalidated`. By default, fields are validated eagerly.
+ */
 export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly): Field<T> {
   const validities = _validate(field);
 

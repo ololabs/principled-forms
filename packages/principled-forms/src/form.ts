@@ -92,6 +92,20 @@ function mapValues<T, U>(dict: Dict<T>, mapper: (value: T) => U): Dict<U> {
 
 type Validated<F> = { form: F; isValid: boolean };
 
+/**
+  Validate a form model.
+  
+  The validity of a form is the composition of the validity of all of its
+  fields. If all fields are valid, the form is valid; if any fields are invalid,
+  the form is invalid. `Field`s are always validated eagerly in the context of a
+  form validation. (For more discussion, see the documentation of the `validate`
+  function in the `field` module.)
+
+  @param formToValidate A form model to validate. Treated as immutable.
+  @return An object with a new `Form` derived from the passed-in-form by way of
+          having all its fields validated, and the composite validity of those
+          fields.
+ */
 export function validate<T, F extends Form<T>>(formToValidate: F): Validated<F> {
   // `mapValues` doesn't understand that F is indeed a dictionary, but we know it is.
   const form: F = mapValues(formToValidate as Dict<Field<any>>, Field.validate) as any;
