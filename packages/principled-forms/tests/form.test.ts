@@ -123,7 +123,7 @@ describe('`Form`', () => {
       expect(v.form.middleName.validity.type).toBe(Validity.Type.Valid);
     });
 
-    test('given only valid fielsd or empty optional fields', () => {
+    test('given only valid fields or empty optional fields', () => {
       const v = Form.validate(VALID);
       expect(v.isValid).toBe(true);
       expect(v.form.age.validity.type).toBe(Validity.Type.Valid);

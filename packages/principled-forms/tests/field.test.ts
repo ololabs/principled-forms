@@ -59,44 +59,56 @@ describe('`field` module', () => {
 
   describe('`validate` function', () => {
     describe('with `Validate.Eagerly`', () => {
-      test('for `optional` fields', () => {
-        const unset = Field.validate(
-          Field.optional({ validators: [minValue(10)] }),
-          Validate.Eagerly
-        );
-        expect(unset.validity.type).toBe(Validity.Type.Valid);
+      describe('for `optional` fields', () => {
+        test('with no value', () => {
+          const unset = Field.validate(
+            Field.optional({ validators: [minValue(10)] }),
+            Validate.Eagerly
+          );
+          expect(unset.validity.type).toBe(Validity.Type.Valid);
+        });
 
-        const unvalidatedInvalid = Field.validate(
-          Field.optional({ validators: [minValue(10)], value: 5 }),
-          Validate.Eagerly
-        );
-        expect(unvalidatedInvalid.validity.type).toBe(Validity.Type.Invalid);
+        test('with an initially unvalidated, invalid value', () => {
+          const unvalidatedInvalid = Field.validate(
+            Field.optional({ validators: [minValue(10)], value: 5 }),
+            Validate.Eagerly
+          );
+          expect(unvalidatedInvalid.validity.type).toBe(Validity.Type.Invalid);
+        });
 
-        const unvalidatedValid = Field.validate(
-          Field.optional({ validators: [minValue(10)], value: 20 }),
-          Validate.Eagerly
-        );
-        expect(unvalidatedValid.validity.type).toBe(Validity.Type.Valid);
+        test('with an initially unvalidated, valid value', () => {
+          const unvalidatedValid = Field.validate(
+            Field.optional({ validators: [minValue(10)], value: 20 }),
+            Validate.Eagerly
+          );
+          expect(unvalidatedValid.validity.type).toBe(Validity.Type.Valid);
+        });
       });
 
-      test('for `required` fields', () => {
-        const unset = Field.validate(
-          Field.required({ validators: [minValue(10)] }),
-          Validate.Eagerly
-        );
-        expect(unset.validity.type).toBe(Validity.Type.Invalid);
+      describe('for `required` fields', () => {
+        test('with no value', () => {
+          const unset = Field.validate(
+            Field.required({ validators: [minValue(10)] }),
+            Validate.Eagerly
+          );
+          expect(unset.validity.type).toBe(Validity.Type.Invalid);
+        });
 
-        const unvalidatedInvalid = Field.validate(
-          Field.required({ validators: [minValue(10)], value: 5 }),
-          Validate.Eagerly
-        );
-        expect(unvalidatedInvalid.validity.type).toBe(Validity.Type.Invalid);
+        test('with no value', () => {
+          const unvalidatedInvalid = Field.validate(
+            Field.required({ validators: [minValue(10)], value: 5 }),
+            Validate.Eagerly
+          );
+          expect(unvalidatedInvalid.validity.type).toBe(Validity.Type.Invalid);
+        });
 
-        const unvalidatedValid = Field.validate(
-          Field.required({ validators: [minValue(10)], value: 20 }),
-          Validate.Eagerly
-        );
-        expect(unvalidatedValid.validity.type).toBe(Validity.Type.Valid);
+        test('with an initially unvalidated, valid value', () => {
+          const unvalidatedValid = Field.validate(
+            Field.required({ validators: [minValue(10)], value: 20 }),
+            Validate.Eagerly
+          );
+          expect(unvalidatedValid.validity.type).toBe(Validity.Type.Valid);
+        });
       });
     });
 
