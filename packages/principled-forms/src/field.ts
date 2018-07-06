@@ -1,10 +1,6 @@
-import Maybe, { Just, Nothing } from 'true-myth/maybe';
+import { Maybe } from 'true-myth';
 
-// These are to make TS happy.
-Just;
-Nothing;
-
-import Validity, { Validator, Validated, Invalid, Unvalidated, isMissing } from '../validity';
+import Validity, { Validator, Validated, Invalid, Unvalidated, isMissing, valid } from './validity';
 
 export enum Type {
   email = 'email',
@@ -17,10 +13,16 @@ export enum Type {
   radio = 'radio'
 }
 
-const _validate = <T>(field: Field<T>): Validated[] => {
-  const rule = field.isRequired ? Validity.required : Validity.optional;
-  return rule(...field.validators)(field.value);
-};
+const _required = <T>(field: RequiredField<T>): Validated[] =>
+  isMissing(field.value)
+    ? [Invalid.because(field.messageIfMissing)]
+    : field.validators.map(validate => validate(field.value!));
+
+const _optional = <T>(field: OptionalField<T>): Validated[] =>
+  isMissing(field.value) ? [valid()] : field.validators.map(validate => validate(field.value!));
+
+const _validate = <T>(field: Field<T>): Validated[] =>
+  field.isRequired ? _required(field) : _optional(field);
 
 type OnInvalid = (reason: string) => Unvalidated | Invalid;
 
@@ -34,11 +36,11 @@ const toSingleValidity = (
 };
 
 export enum Validate {
-  Lazily = 'Lazily',
-  Eagerly = 'Eagerly'
+  Lazily,
+  Eagerly
 }
 
-export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly) {
+export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly): Field<T> {
   const validities = _validate(field);
 
   // We eagerly validate *either* when configured to *or* when the field has
@@ -56,7 +58,6 @@ export function validate<T>(field: Field<T>, eagerness = Validate.Eagerly) {
 
 export interface MinimalField<T> {
   value?: T;
-  isRequired: boolean;
   readonly type: Type;
   readonly validators: Validator<T>[];
   readonly validity: Validity;
@@ -66,25 +67,31 @@ export type RequiredFieldConfig<T> = Partial<{
   type: Type;
   validators: Array<Validator<T>>;
   value: T;
+  messageIfMissing: string;
 }>;
 
-export class RequiredField<T> implements MinimalField<T> {
-  value?: T;
+export const DEFAULT_MISSING_MESSAGE = 'field is required';
 
-  isRequired: true = true;
+export class RequiredField<T> implements MinimalField<T> {
+  readonly value?: T;
+
+  readonly isRequired: true = true;
 
   readonly type: Type;
   readonly validators: Array<Validator<T>>;
   readonly validity: Validity;
+  readonly messageIfMissing: string;
 
   constructor({
     type = Type.text,
     validators = [],
-    value = undefined
+    value = undefined,
+    messageIfMissing = DEFAULT_MISSING_MESSAGE
   }: RequiredFieldConfig<T> = {}) {
     this.type = type;
     this.value = value;
     this.validators = validators;
+    this.messageIfMissing = messageIfMissing;
     this.validity = isMissing(this.value)
       ? Validity.unvalidated()
       : toSingleValidity(_validate(this));
@@ -100,9 +107,9 @@ export type OptionalFieldConfig<T> = Partial<{
 }>;
 
 export class OptionalField<T> implements MinimalField<T> {
-  value?: T;
+  readonly value?: T;
 
-  isRequired: false = false;
+  readonly isRequired: false = false;
 
   readonly type: Type;
   readonly validators: Array<Validator<T>>;
@@ -129,16 +136,18 @@ export class OptionalField<T> implements MinimalField<T> {
 
 const optional = <T>(config?: OptionalFieldConfig<T>) => new OptionalField(config);
 
-export type Field<T> = RequiredField<T> | OptionalField<T>;
-
 export interface FieldConstructors<T> {
   required(options?: RequiredFieldConfig<T>): RequiredField<T>;
   optional(options?: OptionalFieldConfig<T>): OptionalField<T>;
 }
 
+export type Field<T> = RequiredField<T> | OptionalField<T>;
+
 export const Field = {
   Required: RequiredField,
   Optional: OptionalField,
+  Type,
+  Validate,
   required,
   optional,
   validate

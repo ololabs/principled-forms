@@ -1,6 +1,6 @@
 import { Maybe } from 'true-myth';
 
-import Field, { OptionalField, RequiredField, Validate } from './field';
+import Field, { OptionalField, RequiredField } from './field';
 import Validity from './validity';
 import { NonNullableFieldNames } from './type-utils';
 
@@ -19,7 +19,7 @@ import { NonNullableFieldNames } from './type-utils';
   export type User = {
     age: number;
     name?: string;
-    description: Maybe<string>;
+    homeTown: Maybe<string>;
     attributes: string[];
   };
   ```
@@ -30,13 +30,13 @@ import { NonNullableFieldNames } from './type-utils';
   type Form<User> = {
     age: RequiredField<number>;
     name: OptionalField<string>;
-    description: OptionalField<string>;
+    homeTown: OptionalField<string>;
   }
   ```
 
   This is useful for constraining the type of a form model in your application.
 
-  For example, you might do this at a top-level component in Ember.js (3.1+):
+  For example, you might do this at a top-level component in Ember.js 3.1+:
 
   ```ts
   import Component from '@ember/component';
@@ -48,9 +48,9 @@ import { NonNullableFieldNames } from './type-utils';
   import User from 'my-app/models/user';
 
   const modelFromUser: FromModel<User> = user => ({
-    age: Field.required({ type: Type.number, value: user.age, validators: [minValue(0)] }),
+    age: Field.required({ type: Type.number, value: user.age, validators: [minValue(13)] }),
     name: Field.optional({ value: user.name }),
-    description: Field.optional({ value: user.description }),
+    homeTown: Field.optional({ value: user.homeTown }),
   });
 
   export default class UserInfo extends Component {
@@ -65,10 +65,9 @@ import { NonNullableFieldNames } from './type-utils';
   }
   ```
 
-  Note that if the persistence layer model here is an Ember Data model, it
-  _must_ be using ES6 class syntax with Ember Decorators in Ember 3.1+ for this
-  to work, since otherwise its types are `ComputedProperty` instances. Types
-  which do not have class properties on them will Just Work™.
+  Note that `model` here is *not* an Ember Data model, but the same `User` type
+  given above; for notes on Ember Data types, see the `ember-principled-forms`
+  documentation.
  */
 export type Form<T> = Required<
   {
@@ -81,23 +80,37 @@ export type Form<T> = Required<
 export type FormProp<T> = keyof Form<T>;
 export type FormValue<T> = Form<T>[FormProp<T>]['value'];
 
-export const isValid = <T, F extends Form<T>, K extends keyof F>(form: F): boolean =>
-  (Object.keys(form) as K[])
-    .map(key => form[key] as Field<any>) // `any` b/c TS loses mapped type context here
-    .map(field => Field.validate(field, Validate.Lazily))
-    .map(
-      field =>
-        Validity.isValid(field.validity) ||
-        (Validity.isUnvalidated(field.validity) && !field.isRequired)
-    )
-    .reduce((allValid, validity) => allValid && validity, true); // flatMap
+// Inspired by lodash's implementation.
+type Dict<T> = { [K: string]: T };
+function mapValues<T, U>(dict: Dict<T>, mapper: (value: T) => U): Dict<U> {
+  const result: Dict<U> = {};
+  Object.keys(dict).forEach(key => {
+    result[key] = mapper(dict[key]);
+  });
+  return result;
+}
+
+type Validated<F> = { form: F; isValid: boolean };
+
+export function validate<T, F extends Form<T>>(formToValidate: F): Validated<F> {
+  // `mapValues` doesn't understand that F is indeed a dictionary, but we know it is.
+  const form: F = mapValues(formToValidate as Dict<Field<any>>, Field.validate) as any;
+  const isValid = (Object.values(form) as Field<any>[])
+    .map(field => field.validity)
+    .every(Validity.isValid);
+
+  return { form, isValid };
+}
+
+export const isValid = <T, F extends Form<T>>(form: F): boolean => validate(form).isValid;
 
 export type FromModel<T> = (
   model: T extends Maybe<infer U> ? Maybe<Partial<U>> : Partial<T>
 ) => Form<T extends Maybe<infer U> ? U : T>;
 
 export const Form = {
-  isValid
+  isValid,
+  validate
 };
 
 export default Form;
