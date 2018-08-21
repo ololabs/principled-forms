@@ -12,12 +12,12 @@
   "devDependencies": {
     "@types/jest": "^23.1.0",
     "jest": "23.1.0",
-    "prettier-eslint": "8.8.1",
+    "prettier-eslint": "8.8.2",
     "rimraf": "2.6.2",
     "shelljs": "^0.8.2",
-    "ts-jest": "^22.4.6",
-    "typescript": "^2.9.2",
-    "typescript-eslint-parser": "15.0.0"
+    "ts-jest": "^23.1.4",
+    "typescript": "^3.0.1",
+    "typescript-eslint-parser": "18.0.0"
   },
   "main": "ember-addon.js",
   "keywords": [
