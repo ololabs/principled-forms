@@ -27,6 +27,7 @@
     "ember-cli-babel": "^6.6.0",
     "ember-cli-htmlbars": "^2.0.3",
     "ember-decorators": "^2.3.1",
+    "ember-named-arguments-polyfill": "^1.0.0",
     "true-myth": "2.0.0"
   },
   "devDependencies": {

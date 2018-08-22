@@ -4,37 +4,37 @@
       id=this.id
       isInvalid=this.isInvalid
       error=this.error
-      label=label
-      model=model
+      label=@label
+      model=@model
       errorId=this.errorId
-      required=required
-      ariaInvalid=ariaInvalid
-      ariaDescribedBy=ariaDescribedBy
+      required=this.required
+      ariaInvalid=this.ariaInvalid
+      ariaDescribedBy=this.ariaDescribedBy
       onChange=(action this.handleChange value='target.value')
       onInput=(action this.handleInput value='target.value')
   )}}
 
 {{else}}
 
-  <label for={{this.id}} class={{labelClass}}>
-    {{label}}
+  <label for={{this.id}} class={{@labelClass}}>
+    {{@label}}
   </label>
 
   <input
       id={{this.id}}
-      type={{model.type}}
+      type={{@model.type}}
       oninput={{action this.handleInput value='target.value'}}
       onchange={{action this.handleChange value='target.value'}}
-      class={{inputClass}}
-      value={{model.value}}
-      required={{required}}
-      aria-invalid={{ariaInvalid}}
-      aria-describedby={{ariaDescribedBy}}
+      class={{@inputClass}}
+      value={{@model.value}}
+      required={{this.required}}
+      aria-invalid={{this.ariaInvalid}}
+      aria-describedby={{this.ariaDescribedBy}}
       ...attributes
   />
 
   {{#if this.isInvalid}}
-    <span class={{errorClass}} id={{this.errorId}}>{{model.validity.reason}}</span>
+    <span class={{@errorClass}} id={{this.errorId}}>{{this.error}}</span>
   {{/if}}
 
 {{/if}}
