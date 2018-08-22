@@ -1,16 +1,16 @@
 import Component from '@ember/component';
 import { assert } from '@ember/debug';
-import { action, computed } from '@ember-decorators/object';
-import { tagName } from '@ember-decorators/component';
+import { computed } from '@ember-decorators/object';
+import { tagName, layout } from '@ember-decorators/component';
+import { isNone } from '@ember/utils';
 
 import Field, { Type } from '@olo/principled-forms/field';
-import { isInvalid } from '@olo/principled-forms/validity';
+import { isInvalid, Invalid } from '@olo/principled-forms/validity';
 
 import { assertNever } from '@olo/ember-principled-forms/lib/type-utils';
 
 // @ts-ignore: Ignore import of compiled template
-import layout from './template';
-import { isNone } from '@ember/utils';
+import template from './template';
 
 type StringInputType = Type.color | Type.email | Type.password | Type.text;
 
@@ -62,15 +62,19 @@ function parseValue(value: string, type: Type): string | number | boolean | Date
   @export default
  */
 @tagName('')
+@layout(template)
 export default class FormField<T> extends Component {
-  layout = layout;
-
-  label!: string;
+  readonly label!: string;
   readonly model!: Field<T>;
 
   @computed('model.validity')
   get isInvalid() {
     return isInvalid(this.model.validity);
+  }
+
+  @computed('isInvalid', 'model.validity.reason')
+  get error() {
+    return this.isInvalid ? (this.model.validity as Invalid).reason : '';
   }
 
   @computed('model.isRequired')
@@ -80,8 +84,7 @@ export default class FormField<T> extends Component {
 
   @computed('isInvalid')
   get ariaInvalid(): HTMLAttribute {
-    const isValid = !this.isInvalid;
-    return isValid ? undefined : 'true';
+    return !this.isInvalid ? undefined : 'true';
   }
 
   // DISCUSS: What other useful defaults can we apply?
@@ -113,13 +116,10 @@ export default class FormField<T> extends Component {
 
   // Both of these have double `as any` coercions because Typescript currently
   // fails to properly resolve the generic with the type narrowing.
-
-  @action
   handleChange(newValue: string): void {
     this.onChange(parseValue(newValue, this.model.type as any) as any);
   }
 
-  @action
   handleInput(newValue: string): void {
     this.onInput(parseValue(newValue, this.model.type as any) as any);
   }

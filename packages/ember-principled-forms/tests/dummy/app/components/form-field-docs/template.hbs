@@ -1,4 +1,5 @@
 <h2>Inline</h2>
+
 {{#docs-demo as |demo|}}
   <div class="demo-heading">
     <h3><code>name</code></h3>
@@ -9,15 +10,15 @@
     </p>
   </div>
   {{#demo.example name='inline-required-text-form-field.hbs'}}
-    {{form-field
-        label='Name'
-        model=this.user.name
-        onChange=(action 'handleChange' 'name')
-        onInput=(action 'handleInput' 'name')
-        labelClass='label'
-        inputClass='input'
-        errorClass='error'
-    }}
+    <FormField
+        @label='Name'
+        @model={{this.user.name}}
+        @onChange={{action this.handleChange 'name'}}
+        @onInput={{action this.handleInput 'name'}}
+        @labelClass='label'
+        @inputClass='input'
+        @errorClass='error'
+    />
   {{/demo.example}}
 
   {{demo.snippet 'inline-required-text-form-field.hbs'}}
@@ -34,54 +35,63 @@
   </div>
 
   {{#demo.example name='inline-optional-text-form-field.hbs'}}
-    {{form-field
-        label='Secondary Name'
-        model=this.user.secondaryName
-        onInput=(action 'handleInput' 'secondaryName')
-        labelClass='label'
-        inputClass='input'
-        errorClass='error'
-    }}
+    <FormField
+        @label='Secondary Name'
+        @model={{this.user.secondaryName}}
+        @onInput={{action this.handleInput 'secondaryName'}}
+        @labelClass='label'
+        @inputClass='input'
+        @errorClass='error'
+    />
   {{/demo.example}}
 
   {{demo.snippet 'inline-optional-text-form-field.hbs'}}
 {{/docs-demo}}
 
 {{#docs-demo as |demo|}}
-  {{#demo.example name='inline-required-email-form-field.hbs'}}
-    {{form-field
-        label='Email (Required)'
-        model=this.user.emailReq
-        onChange=(action 'handleChange' 'emailReq')
-        onInput=(action 'handleInput' 'emailReq')
-        labelClass='label'
-        inputClass='input'
-        errorClass='error'
-    }}
+  <div class='demo-heading'>
+    <h3><code>email</code> (required)</h3>
+    <p>
+      Required: {{this.user.emailReq.isRequired}}<br>
+      Value: {{this.user.emailReq.value}}<br>
+      Validity: {{this.user.emailReq.validity.type}}<br>
+    </p>
+  </div>
 
-    Required: {{this.user.emailReq.isRequired}}<br>
-    Value: {{this.user.emailReq.value}}<br>
-    Validity: {{this.user.emailReq.validity.type}}<br>
+  {{#demo.example name='inline-required-email-form-field.hbs'}}
+    <FormField
+        @label='Email (Required)'
+        @model={{this.user.emailReq}}
+        @onChange={{action this.handleChange 'emailReq'}}
+        @onInput={{action this.handleInput 'emailReq'}}
+        @labelClass='label'
+        @inputClass='input'
+        @errorClass='error'
+    />
   {{/demo.example}}
 
   {{demo.snippet 'inline-required-email-form-field.hbs'}}
 {{/docs-demo}}
 
 {{#docs-demo as |demo|}}
-  {{#demo.example name='inline-optional-email-form-field.hbs'}}
-    {{form-field
-        label='Email (Optional)'
-        model=this.user.emailOpt
-        onInput=(action 'handleInput' 'emailOpt')
-        labelClass='label'
-        inputClass='input'
-        errorClass='error'
-    }}
-    <br/>
+  <div class='demo-heading'>
+    <h3><code>email</code> (optional)</h3>
+    <p>
+      Required: {{this.user.emailOpt.isRequired}}<br>
+      Value: {{this.user.emailOpt.value}}<br>
+      Validity: {{this.user.emailOpt.validity.type}}<br>
+    </p>
+  </div>
 
-    Required: {{this.user.emailOpt.isRequired}}<br>
-    Value: {{this.user.emailOpt.value}}<br>
-    Validity: {{this.user.emailOpt.validity.type}}<br>
+  {{#demo.example name='inline-optional-email-form-field.hbs'}}
+    <FormField
+        @label='Email (Optional)'
+        @model={{this.user.emailOpt}}
+        @onInput={{action this.handleInput 'emailOpt'}}
+        @labelClass='label'
+        @inputClass='input'
+        @errorClass='error'
+    />
   {{/demo.example}}
 
   {{demo.snippet 'inline-optional-email-form-field.hbs'}}
@@ -97,17 +107,14 @@
     </p>
   </div>
   {{#demo.example name='inline-required-number-form-field.hbs'}}
-    {{form-field
-        label='Age (18 or older)'
-        model=this.user.age
-        onChange=(action 'handleChange' 'age')
-        labelClass='label'
-        inputClass='input'
-        errorClass='error'
-    }}
-    <br/>
-
-
+    <FormField
+        @label='Age (18 or older)'
+        @model={{this.user.age}}
+        @onChange={{action this.handleChange 'age'}}
+        @labelClass='label'
+        @inputClass='input'
+        @errorClass='error'
+    />
   {{/demo.example}}
 
   {{demo.snippet 'inline-required-number-form-field.hbs'}}
@@ -116,28 +123,36 @@
 <h2>Block form</h2>
 
 {{#docs-demo as |demo|}}
+  <div class="demo-heading">
+    <h3><code>name</code></h3>
+    <p>
+      Required: {{this.user.name.isRequired}}<br>
+      Value: {{this.user.name.value}}<br>
+      Validity: {{this.user.name.validity.type}}<br>
+    </p>
+  </div>
+
   {{#demo.example name='block-required-text-form-field.hbs'}}
-    {{#form-field
-        label='Name'
-        model=this.user.name
-        onInput=(action 'handleInput' 'name')
+    <FormField
+        @label='Name'
+        @model={{this.user.name}}
+        @onInput={{action this.handleInput 'name'}}
         as |field|
-    }}
+    >
       <label class='label'>
         {{field.label}}
         <input
-          type={{field.type}}
-          oninput={{field.onInput}}
-          value={{field.model.value}}
-          class='input'
+            type={{field.type}}
+            oninput={{field.onInput}}
+            value={{field.model.value}}
+            class='input'
         />
-      </label>
-    {{/form-field}}
-    <br/>
 
-    Required: {{this.user.name.isRequired}}<br>
-    Value: {{this.user.name.value}}<br>
-    Validity: {{this.user.name.validity.type}}<br>
+        {{#if field.isInvalid}}
+          <span class='error'>{{field.error}}</span>
+        {{/if}}
+      </label>
+    </FormField>
   {{/demo.example}}
 
   {{demo.snippet 'block-required-text-form-field.hbs'}}
@@ -149,86 +164,111 @@ We want "lazy" validation while they're filling the field out the first time, bu
 validation when they leave the field, i.e. on change. Let's consider calling that out in docs.
 --}}
 {{#docs-demo as |demo|}}
+  <div class="demo-heading">
+    <h3><code>email</code> (required)</h3>
+    <p>
+      Required: {{this.user.emailReq.isRequired}}<br>
+      Value: {{this.user.emailReq.value}}<br>
+      Validity: {{this.user.emailReq.validity.type}}<br>
+    </p>
+  </div>
+
   {{#demo.example name='required-email-form-field.hbs'}}
-    {{#form-field
-        label='Email (Required)'
-        model=this.user.emailReq
-        onChange=(action 'handleChange' 'emailReq')
-        onInput=(action 'handleInput' 'emailReq')
+    <FormField
+        @label='Email (Required)'
+        @model={{this.user.emailReq}}
+        @onChange={{action this.handleChange 'emailReq'}}
+        @onInput={{action this.handleInput 'emailReq'}}
         as |field|
-    }}
+    >
       <label class='label'>
         {{field.label}}
         <input
-          type={{field.model.type}}
-          onchange={{field.onChange}}
-          oninput={{field.onInput}}
-          class='input'
-          value={{field.model.value}}
+            type={{field.model.type}}
+            onchange={{field.onChange}}
+            oninput={{field.onInput}}
+            class='input'
+            value={{field.model.value}}
         />
-      </label>
-    {{/form-field}}
-    <br/>
 
-    Required: {{this.user.emailReq.isRequired}}<br>
-    Value: {{this.user.emailReq.value}}<br>
-    Validity: {{this.user.emailReq.validity.type}}<br>
+        {{#if field.isInvalid}}
+          <span class='error'>{{field.error}}</span>
+        {{/if}}
+      </label>
+    </FormField>
   {{/demo.example}}
 
   {{demo.snippet 'required-email-form-field.hbs'}}
 {{/docs-demo}}
 
 {{#docs-demo as |demo|}}
+  <div class="demo-heading">
+    <h3><code>email</code> (optional)</h3>
+    <p>
+      Required: {{this.user.emailOpt.isRequired}}<br>
+      Value: {{this.user.emailOpt.value}}<br>
+      Validity: {{this.user.emailOpt.validity.type}}<br>
+    </p>
+  </div>
+
   {{#demo.example name='optional-email-form-field.hbs'}}
-    {{#form-field
-        label='Email (Optional)'
-        model=this.user.emailOpt
-        onInput=(action 'handleInput' 'emailOpt')
+    <FormField
+        @label='Email (Optional)'
+        @model={{this.user.emailOpt}}
+        @onInput={{action this.handleInput 'emailOpt'}}
         as |field|
-    }}
+    >
       <label class='label'>
         {{field.label}}
         <input
-          type={{field.model.type}}
-          oninput={{field.onInput}}
-          value={{field.model.value}}
-          class='input'
+            type={{field.model.type}}
+            oninput={{field.onInput}}
+            value={{field.model.value}}
+            class='input'
         />
-      </label>
-    {{/form-field}}
-    <br/>
 
-    Required: {{this.user.emailOpt.isRequired}}<br>
-    Value: {{this.user.emailOpt.value}}<br>
-    Validity: {{this.user.emailOpt.validity.type}}<br>
+        {{#if field.isInvalid}}
+          <span class='error'>{{field.error}}</span>
+        {{/if}}
+      </label>
+    </FormField>
   {{/demo.example}}
 
   {{demo.snippet 'optional-email-form-field.hbs'}}
 {{/docs-demo}}
 
 {{#docs-demo as |demo|}}
+  <div class="demo-heading">
+    <h3><code>age</code></h3>
+    <p>
+      Required: {{this.user.age.isRequired}}<br>
+      Value: {{this.user.age.value}}<br>
+      Validity: {{this.user.age.validity.type}}<br>
+    </p>
+  </div>
+
   {{#demo.example name='required-number-form-field.hbs'}}
-    {{#form-field
-        label='Age (18 or older)'
-        model=this.user.age
-        onChange=(action 'handleChange' 'age')
+    <FormField
+        @label='Age (18 or older)'
+        @model={{this.user.age}}
+        @onChange={{action this.handleChange 'age'}}
+        @onInput={{action this.handleInput 'age'}}
         as |field|
-    }}
+    >
       <label class='label'>
         {{field.label}}
         <input
-          type={{field.type}}
-          onchange={{field.onChange}}
-          value={{field.model.value}}
-          class='input'
+            type={{field.model.type}}
+            onchange={{field.onChange}}
+            value={{field.model.value}}
+            class='input'
         />
-      </label>
-    {{/form-field}}
-    <br/>
 
-    Required: {{this.user.age.isRequired}}<br>
-    Value: {{this.user.age.value}}<br>
-    Validity: {{this.user.age.validity.type}}<br>
+        {{#if field.isInvalid}}
+          <span class='error'>{{field.error}}</span>
+        {{/if}}
+      </label>
+    </FormField>
   {{/demo.example}}
 
   {{demo.snippet 'required-number-form-field.hbs'}}

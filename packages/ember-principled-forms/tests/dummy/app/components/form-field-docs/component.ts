@@ -1,6 +1,6 @@
 import Component from '@ember/component';
+import { tagName, layout } from '@ember-decorators/component';
 
-import { action } from '@ember-decorators/object';
 import update from 'ember-object-update';
 import { Maybe } from 'true-myth';
 
@@ -18,7 +18,8 @@ import { FormProp, FormValue, FromModel } from '@olo/principled-forms/form';
 import { minValue, minLength, maxLength } from '@olo/principled-forms/validators';
 
 // @ts-ignore: Ignore import of compiled template
-import layout from './template';
+import template from './template';
+import { action } from '@ember-decorators/object';
 
 export type User = {
   age: number;
@@ -38,13 +39,13 @@ const userForm: FromModel<User> = user => ({
   emailReq: EmailField.required({ value: user.emailReq })
 });
 
+@tagName('')
+@layout(template)
 export default class FormField extends Component {
-  layout = layout;
-
   user = userForm({
     age: 30,
     name: undefined,
-    secondaryName: 'Skywalker',
+    secondaryName: '',
     emailOpt: Maybe.nothing(),
     emailReq: undefined
   });

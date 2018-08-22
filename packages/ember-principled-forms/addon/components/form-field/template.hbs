@@ -3,14 +3,15 @@
   {{yield (hash
       id=this.id
       isInvalid=this.isInvalid
+      error=this.error
       label=label
       model=model
       errorId=this.errorId
       required=required
       ariaInvalid=ariaInvalid
       ariaDescribedBy=ariaDescribedBy
-      onChange=(action 'handleChange' value='target.value')
-      onInput=(action 'handleInput' value='target.value')
+      onChange=(action this.handleChange value='target.value')
+      onInput=(action this.handleInput value='target.value')
   )}}
 
 {{else}}
@@ -22,13 +23,14 @@
   <input
       id={{this.id}}
       type={{model.type}}
-      oninput={{action 'handleInput' value='target.value'}}
-      onchange={{action 'handleChange' value='target.value'}}
+      oninput={{action this.handleInput value='target.value'}}
+      onchange={{action this.handleChange value='target.value'}}
       class={{inputClass}}
       value={{model.value}}
       required={{required}}
       aria-invalid={{ariaInvalid}}
       aria-describedby={{ariaDescribedBy}}
+      ...attributes
   />
 
   {{#if this.isInvalid}}
