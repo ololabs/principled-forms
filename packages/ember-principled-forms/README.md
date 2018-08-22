@@ -1,10 +1,12 @@
-ember-principled-forms
-==============================================================================
+@olo/ember-principled-forms
+===========================
 
-[Short description of the addon.]
+Ember.js components which integrate the [`@olo/principled-forms`][pf] form handling-library.
+
+[pf]: https://github.com/ololabs/principled-forms/tree/master/packages/principled-forms
 
 Installation
-------------------------------------------------------------------------------
+------------
 
 ```
 ember install ember-principled-forms
@@ -12,13 +14,13 @@ ember install ember-principled-forms
 
 
 Usage
-------------------------------------------------------------------------------
+-----
 
 [Longer description of how to use the addon in apps.]
 
 
 Contributing
-------------------------------------------------------------------------------
+------------
 
 ### Installation
 
@@ -45,6 +47,6 @@ Contributing
 For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
 
 License
-------------------------------------------------------------------------------
+-------
 
 This project is licensed under the [MIT License](LICENSE.md).
