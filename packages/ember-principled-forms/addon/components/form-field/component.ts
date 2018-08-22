@@ -70,7 +70,7 @@ export default class FormField<T> extends Component {
   get isInvalid() {
     return isInvalid(this.model.validity);
   }
-  
+
   @computed('model.isRequired')
   get required(): HTMLAttribute {
     return this.model.isRequired ? true : undefined;
@@ -79,13 +79,16 @@ export default class FormField<T> extends Component {
   @computed('isInvalid')
   get ariaInvalid(): HTMLAttribute {
     const isValid = !this.isInvalid;
-    return isValid ? undefined : "true";
+    return isValid ? undefined : 'true';
   }
 
   // DISCUSS: What other useful defaults can we apply?
   // e.g. an ARIA object
   id: string = defaultTo(this.id, `form-field-${this.model.type}-${this.label}`);
-  errorId: string = defaultTo(`${this.id}-error`, `form-field-${this.model.type}-${this.label}-error`);
+  errorId: string = defaultTo(
+    `${this.id}-error`,
+    `form-field-${this.model.type}-${this.label}-error`
+  );
 
   @computed('isInvalid')
   get ariaDescribedBy(): HTMLAttribute {
