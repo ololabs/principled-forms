@@ -27,7 +27,9 @@ module('Integration | Component | form-field', function(hooks) {
     // Handle any actions with this.set('myAction', function(val) { ... });
     this.setProperties({ model, onInput: noop, onChange: noop });
 
-    await render(hbs`{{form-field label='Name' model=this.model.name onInput=this.onInput}}`);
+    await render(hbs`
+      <FormField @label='Name' @model={{this.model.name}} @onInput={{this.onInput}} />
+    `);
     const optionalInput = (this.element.querySelector('input') as HTMLInputElement);
     const optionalInputLabel = (this.element.querySelector('label') as HTMLLabelElement);
     assert.ok(
@@ -41,7 +43,9 @@ module('Integration | Component | form-field', function(hooks) {
 
     await a11yAudit();
 
-    await render(hbs`{{form-field label='Age' model=this.model.age onInput=this.onInput}}`);
+    await render(hbs`
+      <FormField @label='Age' @model={{this.model.age}} @onInput={{this.onInput}} />
+    `);
     const requiredInput = (this.element.querySelector('input') as HTMLInputElement);
     assert.ok(
       requiredInput.value === age.value!.toString(),
@@ -55,9 +59,9 @@ module('Integration | Component | form-field', function(hooks) {
     const label = 'wat';
     this.set('label', label);
     await render(hbs`
-      {{#form-field label=this.label model=model.name onChange=this.onChange as |field|}}
+      <FormField @label={{this.label}} @model={{model.name}} @onChange={{this.onChange}} as |field|>
         {{field.label}}
-      {{/form-field}}
+      </FormField>
     `);
 
     assert.equal(this.element.textContent!.trim(), label, 'yields field model back out');
@@ -71,7 +75,7 @@ module('Integration | Component | form-field', function(hooks) {
     const noop = () => {};
     this.setProperties({ name, onInput: noop, onChange: noop });
 
-    await render(hbs`{{form-field label='Name' model=this.name onInput=this.onInput}}`);
+    await render(hbs`<FormField @label='Name' @model={{this.name}} @onInput={{this.onInput}} />`);
     const nameInput = (this.element.querySelector('input') as HTMLInputElement);
     const errorSpan = (this.element.querySelector('span') as HTMLElement);
 
@@ -84,7 +88,7 @@ module('Integration | Component | form-field', function(hooks) {
 
     // Block Format
     await render(hbs`
-      {{#form-field label='Name' model=this.name onInput=this.onInput as |field|}}
+      <FormField @label='Name' @model={{this.name}} @onInput={{this.onInput}} as |field|>
         <input
           id={{field.id}}
           value={{field.model.value}}
@@ -95,7 +99,7 @@ module('Integration | Component | form-field', function(hooks) {
         {{#if field.isInvalid}}
           <span class={{errorClass}} id={{field.errorId}}>{{field.model.validity.reason}}</span>
         {{/if}}
-      {{/form-field}}
+      </FormField>
     `);
 
     const blockNameInput = (this.element.querySelector('input') as HTMLInputElement);
