@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 import { assert } from '@ember/debug';
 import { action, computed } from '@ember-decorators/object';
+import { tagName } from '@ember-decorators/component';
 
 import Field, { Type } from '@olo/principled-forms/field';
 import { isInvalid } from '@olo/principled-forms/validity';
@@ -60,6 +61,7 @@ function parseValue(value: string, type: Type): string | number | boolean | Date
   @class FormField
   @export default
  */
+@tagName('')
 export default class FormField<T> extends Component {
   layout = layout;
 
