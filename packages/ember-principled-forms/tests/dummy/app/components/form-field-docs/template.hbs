@@ -111,6 +111,7 @@
         @label='Age (18 or older)'
         @model={{this.user.age}}
         @onChange={{action this.handleChange 'age'}}
+        @onInput={{action this.handleInput 'age'}}
         @labelClass='label'
         @inputClass='input'
         @errorClass='error'
