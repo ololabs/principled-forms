@@ -5,6 +5,18 @@ export type ErrMessage<T> = (actual: T) => string;
 const defaultInvalid = <T>(fallback: string, actual: T, err?: ErrMessage<T>) =>
   invalid(err ? err(actual) : fallback);
 
+export const equal = <T>(
+  comparisonValue: T,
+  messageIfNotEqual?: (value: T, comparisonValue: T) => string
+): Validator<T> => (value: T) =>
+  comparisonValue === value
+    ? valid()
+    : invalid(
+        messageIfNotEqual
+          ? messageIfNotEqual(value, comparisonValue)
+          : `${value} is not equal to ${comparisonValue}`
+      );
+
 export const minLength = (min: number, err?: ErrMessage<number>): Validator<string> => (
   value: string
 ): Validated =>
@@ -27,8 +39,26 @@ export const maxValue = (max: number, err?: ErrMessage<number>): Validator<numbe
   value: number
 ) => (value <= max ? valid() : defaultInvalid(`Must be at most ${max}`, value, err));
 
+const defaultPhoneMessage: ErrMessage<string> = actual => `${actual} is not a valid phone number`;
+
+export const phone = (message = defaultPhoneMessage): Validator<string> =>
+  regex(/^\(?\d{3}\)?([\s-])?\d{3}([\s-])?\d{4}\s?$/, message);
+
 export const regex = (re: RegExp, err: ErrMessage<string>): Validator<string> => (value: string) =>
   re.test(value) ? valid() : invalid(err(value));
 
-export const Validators = { minLength, maxLength, minValue, maxValue, regex };
+export const truthful = (messageIfFalse: string): Validator<boolean> => (value: boolean) =>
+  value ? valid() : invalid(messageIfFalse);
+
+export const Validators = {
+  equal,
+  minLength,
+  maxLength,
+  minValue,
+  maxValue,
+  phone,
+  regex,
+  truthful
+};
+
 export default Validators;
