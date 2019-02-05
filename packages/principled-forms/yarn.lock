@@ -3390,9 +3390,9 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-"true-myth@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/true-myth/-/true-myth-2.0.0.tgz#dd5001af16c600e03039e03eb7a56c45615dfde9"
+"true-myth@2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/true-myth/-/true-myth-2.2.4.tgz#cbab923b2c918d62ae50d05953fb10e0d1a9e234"
 
 ts-jest@^23.1.4:
   version "23.1.4"

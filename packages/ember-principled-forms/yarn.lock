@@ -8915,6 +8915,10 @@ trim-right@^1.0.1:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/true-myth/-/true-myth-2.0.0.tgz#dd5001af16c600e03039e03eb7a56c45615dfde9"
 
+"true-myth@2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/true-myth/-/true-myth-2.2.4.tgz#cbab923b2c918d62ae50d05953fb10e0d1a9e234"
+
 tunnel-agent@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.6.0.tgz#27a5dea06b36b04a0a9966774b290868f0fc40fd"
