@@ -66,6 +66,9 @@ function parseValue(value: string, type: Type): string | number | boolean | Date
 export default class FormField<T> extends Component {
   id!: string;
   errorId!: string;
+  onChange!: (newValue: T) => void;
+  onInput!: (newValue: T) => void;
+  
   readonly label!: string;
   readonly model!: Field<T>;
 
@@ -94,21 +97,16 @@ export default class FormField<T> extends Component {
     return this.isInvalid ? this.errorId : undefined;
   }
 
-  onChange!: (newValue: T) => void;
-  onInput!: (newValue: T) => void;
-
   init() {
     super.init();
 
     // DISCUSS: What other useful defaults can we apply?
     // e.g. an ARIA object
     this.id = defaultTo(this.id, `form-field-${this.model.type}-${this.label}`);
-    this.errorId = defaultTo(
-      `${this.id}-error`,
-      `form-field-${this.model.type}-${this.label}-error`
-    );
+    this.errorId = defaultTo(this.errorId, `${this.id}-error`);
     this.onChange = defaultTo(this.onChange, noop);
     this.onInput = defaultTo(this.onInput, noop);
+
     assert(`\`model\` is required on '${this.id}'`, !isNone(this.model));
     assert(`\`label\` is required on '${this.id}'`, isString(this.label));
     assert(
