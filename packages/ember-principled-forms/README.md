@@ -12,6 +12,12 @@ Installation
 ember install ember-principled-forms
 ```
 
+Compatibility
+---------------
+
+This addon has performance issues with TS versions 3.1 and 3.3.
+[Additional info](https://github.com/typed-ember/ember-cli-typescript/issues/337#issuecomment-459485166)
+
 
 Usage
 -----
