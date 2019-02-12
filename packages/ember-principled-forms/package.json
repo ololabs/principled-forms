@@ -1,6 +1,6 @@
 {
   "name": "@olo/ember-principled-forms",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Integration of @olo/principled forms with Ember components",
   "keywords": [
     "ember-addon"
@@ -22,7 +22,7 @@
     "postpublish": "ember ts:clean"
   },
   "dependencies": {
-    "@olo/principled-forms": "0.2.1",
+    "@olo/principled-forms": "0.2.2",
     "ember-angle-bracket-invocation-polyfill": "^1.2.0",
     "ember-cli-babel": "^6.6.0",
     "ember-cli-htmlbars": "^2.0.3",
