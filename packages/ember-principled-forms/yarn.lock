@@ -1386,9 +1386,10 @@ aws4@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
 
-axe-core@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-2.6.1.tgz#28772c4f76966d373acda35b9a409299dc00d1b5"
+axe-core@^3.1.2:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.2.0.tgz#063827424279db54c35cfbd59b6f8079821bc627"
+  integrity sha512-g7MguJCPvWgEvdJHDnWG+xDbDqiiy7t+KvryGUc8y8Pv4ElLpCnpa6CWMvqRozpojRgXR/ubCIsoVljhDEk2lA==
 
 babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
   version "6.26.0"
@@ -4330,11 +4331,12 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-ember-a11y-testing@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/ember-a11y-testing/-/ember-a11y-testing-0.5.2.tgz#0ee555824a8e8181c55470e261b88dad4fdac721"
+ember-a11y-testing@^0.5.6:
+  version "0.5.6"
+  resolved "https://registry.yarnpkg.com/ember-a11y-testing/-/ember-a11y-testing-0.5.6.tgz#b5eb28f5df97cce8b4bd7565539ffc0744bda05e"
+  integrity sha512-Ic2MA3xQ9ZoY+Qkja2+n/livXtnY6WpXFGVhAufKJJGe6EMqIfvaBsFd+TUd/4h2JIUICvm6cZWet5/DZeNycw==
   dependencies:
-    axe-core "^2.6.1"
+    axe-core "^3.1.2"
     broccoli-funnel "^2.0.1"
     ember-cli-babel "^6.8.2"
     ember-cli-version-checker "^2.1.0"
