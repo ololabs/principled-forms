@@ -42,6 +42,16 @@ module.exports = function(environment) {
 
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
+
+    ENV['ember-a11y-testing'] = {
+      componentOptions: {
+        axeOptions: {
+          rules: {
+            'color-contrast': { enabled: false },
+          }
+        }
+      }
+    };
   }
 
   if (environment === 'production') {
