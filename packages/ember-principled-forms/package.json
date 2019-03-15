@@ -1,6 +1,6 @@
 {
   "name": "@olo/ember-principled-forms",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Integration of @olo/principled forms with Ember components",
   "keywords": [
     "ember-addon"
