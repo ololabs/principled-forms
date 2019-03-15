@@ -81,6 +81,9 @@
   "resolutions": {
     "@types/ember": "2.8.32",
     "@types/jquery": "3.3.6",
-    "@types/node": "9.6.6"
+    "@types/node": "9.6.6",
+    "growl": "1.10.0",
+    "merge": "1.2.1",
+    "request": "2.87.0"
   }
 }
