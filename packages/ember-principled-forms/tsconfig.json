@@ -33,6 +33,12 @@
       "@olo/ember-principled-forms/*": [
         "addon/*"
       ],
+      "@olo/ember-principled-forms/test-support": [
+        "addon-test-support"
+      ],
+      "@olo/ember-principled-forms/test-support/*": [
+        "addon-test-support/*"
+      ],
       "*": [
         "types/*"
       ]
@@ -40,9 +46,11 @@
     "experimentalDecorators": true
   },
   "include": [
-    "app",
-    "addon",
-    "tests",
-    "types",
+    "app/**/*",
+    "addon/**/*",
+    "tests/**/*",
+    "types/**/*",
+    "test-support/**/*",
+    "addon-test-support/**/*"
   ]
 }
