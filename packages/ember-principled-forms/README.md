@@ -18,6 +18,7 @@ Compatibility
 This addon has performance issues with TS versions 3.1 and 3.3.
 [Additional info](https://github.com/typed-ember/ember-cli-typescript/issues/337#issuecomment-459485166)
 
+Version >=0.3.0 requires the native ember decorators available in ember [>=3.10.0](https://blog.emberjs.com/2019/05/21/ember-3-10-released.html) or by adding [ember-decorators-polyfill](https://github.com/pzuraq/ember-decorators-polyfill). Otherwise, you'll want to lock to version <=0.2.6.
 
 Usage
 -----

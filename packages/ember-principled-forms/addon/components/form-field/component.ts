@@ -1,13 +1,13 @@
 import Component from '@ember/component';
 import { assert } from '@ember/debug';
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import { tagName, layout } from '@ember-decorators/component';
 import { isNone } from '@ember/utils';
 
 import Field, { Type } from '@olo/principled-forms/field';
 import { isInvalid, Invalid } from '@olo/principled-forms/validity';
 
-import { assertNever } from '@olo/ember-principled-forms/lib/type-utils';
+import { assertNever } from '../../lib/type-utils';
 
 // @ts-ignore: Ignore import of compiled template
 import template from './template';
