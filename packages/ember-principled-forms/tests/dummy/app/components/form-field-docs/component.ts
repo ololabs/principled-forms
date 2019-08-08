@@ -19,7 +19,7 @@ import { minValue, minLength, maxLength } from '@olo/principled-forms/validators
 
 // @ts-ignore: Ignore import of compiled template
 import template from './template';
-import { action } from '@ember-decorators/object';
+import { action } from '@ember/object';
 
 export type User = {
   age: number;
