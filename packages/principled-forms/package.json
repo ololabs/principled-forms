@@ -19,6 +19,9 @@
     "typescript": "^3.0.1",
     "typescript-eslint-parser": "18.0.0"
   },
+  "resolutions": {
+    "braces": "2.3.1"
+  },
   "main": "ember-addon.js",
   "keywords": [
     "ember-addon"
@@ -61,7 +64,9 @@
     "collectCoverageFrom": [
       "src/*"
     ],
-    "coveragePathIgnorePatterns": ["src/index.ts"],
+    "coveragePathIgnorePatterns": [
+      "src/index.ts"
+    ],
     "coverageThreshold": {
       "global": {
         "branches": 100,
